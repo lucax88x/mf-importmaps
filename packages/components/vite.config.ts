@@ -1,16 +1,20 @@
 import { defineConfig, type Plugin, type LibraryOptions, type BuildOptions } from 'vite'
 import react from '@vitejs/plugin-react'
 import * as vite from 'vite'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const libOptions: LibraryOptions = {
-  entry: 'src/index.ts',
+  entry: {
+    index: 'src/index.ts',
+    button: 'src/Button.tsx',
+    'mf-button': 'src/MfButton.ts',
+    calculate: 'src/calculate.ts',
+  },
   formats: ['es'],
-  fileName: 'mf-components',
 }
 
 const buildExternal: BuildOptions['rollupOptions'] = {
@@ -23,7 +27,7 @@ function libraryDevPlugin(): Plugin {
     apply: 'serve',
 
     configureServer(server) {
-      const distPath = resolve(__dirname, 'dist/mf-components.js')
+      const distDir = resolve(__dirname, 'dist')
 
       async function build() {
         await vite.build({
@@ -49,11 +53,13 @@ function libraryDevPlugin(): Plugin {
         }
       })
 
-      // Serve the built library at /mf-components.js
+      // Serve all built JS files from dist/
       server.middlewares.use((req, res, next) => {
-        if (req.url === '/mf-components.js') {
+        const url = req.url ?? ''
+        if (url.endsWith('.js')) {
+          const filePath = resolve(distDir, url.slice(1))
           try {
-            const content = readFileSync(distPath, 'utf-8')
+            const content = readFileSync(filePath, 'utf-8')
             res.setHeader('Content-Type', 'application/javascript')
             res.setHeader('Access-Control-Allow-Origin', '*')
             res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')

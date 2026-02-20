@@ -4,16 +4,28 @@
   "version": "0.0.0",
   "type": "module",
   "main": "src/index.ts",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
+    },
+    "./button": {
+      "types": "./dist/Button.d.ts",
+      "default": "./src/Button.tsx"
+    },
+    "./mf-button": {
+      "types": "./dist/MfButton.d.ts",
+      "default": "./src/MfButton.ts"
+    },
+    "./calculate": {
+      "types": "./dist/calculate.d.ts",
+      "default": "./src/calculate.ts"
     }
   },
   "files": ["dist"],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && tsc -p tsconfig.build.json",
     "dev": "vite --host"
   },
   "dependencies": {
