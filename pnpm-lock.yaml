@@ -39,9 +39,6 @@ importers:
 
   packages/shell:
     dependencies:
-      '@mf/components':
-        specifier: workspace:*
-        version: link:../components
       react:
         specifier: ^19
         version: 19.2.4
@@ -49,6 +46,9 @@ importers:
         specifier: ^19
         version: 19.2.4(react@19.2.4)
     devDependencies:
+      '@mf/components':
+        specifier: workspace:*
+        version: link:../components
       '@types/react':
         specifier: ^19
         version: 19.2.14

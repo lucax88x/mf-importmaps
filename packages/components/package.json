@@ -14,7 +14,7 @@
   "files": ["dist"],
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite --host"
   },
   "dependencies": {
     "react": "^19",
