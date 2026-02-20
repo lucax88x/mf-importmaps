@@ -1,43 +1,31 @@
 {
-  "name": "@mf/components",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "main": "src/index.ts",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
-    },
-    "./button": {
-      "types": "./dist/Button.d.ts",
-      "default": "./src/Button.tsx"
-    },
-    "./mf-button": {
-      "types": "./dist/MfButton.d.ts",
-      "default": "./src/MfButton.ts"
-    },
-    "./calculate": {
-      "types": "./dist/calculate.d.ts",
-      "default": "./src/calculate.ts"
-    }
-  },
-  "files": ["dist"],
-  "scripts": {
-    "build": "vite build && tsgo -p tsconfig.build.json",
-    "typecheck": "tsgo --noEmit",
-    "dev": "vite --host"
-  },
-  "dependencies": {
-    "react": "^19",
-    "react-dom": "^19"
-  },
-  "devDependencies": {
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@typescript/native-preview": "^7.0.0-dev",
-    "@vitejs/plugin-react": "^5",
-    "vite": "8.0.0-beta.15"
-  }
+	"name": "@mf/components",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./types/exports/index.d.ts"
+		},
+		"./*": {
+			"types": "./types/exports/*.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "vite build && rm -rf types && tsgo -p tsconfig.build.json",
+		"typecheck": "tsgo --noEmit",
+		"preview": "vite preview",
+		"dev": "vite --host"
+	},
+	"dependencies": {
+		"react": "^19",
+		"react-dom": "^19"
+	},
+	"devDependencies": {
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"@typescript/native-preview": "^7.0.0-dev",
+		"@vitejs/plugin-react": "^5",
+		"vite": "8.0.0-beta.15"
+	}
 }

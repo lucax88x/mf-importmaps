@@ -1,9 +1,9 @@
-import { Button, MfButton } from "@mf/components";
-import { calculate } from "@mf/components/calculate";
-import { useState } from "react";
+// All imports from @mf/components — loading the module also registers <mf-button>
 
-// Reference MfButton so the import isn't dropped (it registers the custom element)
-console.log("Web component registered:", MfButton.name);
+import { useState } from "react";
+import { Button } from "./exports/Button";
+import { calculate } from "./exports/calculate";
+import "./exports/MfButton";
 
 export default function App() {
 	const [count, setCount] = useState(0);
@@ -18,11 +18,7 @@ export default function App() {
 				margin: "0 auto",
 			}}
 		>
-			<h1>Microfrontend Shell</h1>
-			<p>
-				All imports below come from <code>@mf/components</code> via import maps
-				(in production build).
-			</p>
+			<h1>Microfrontend Components</h1>
 
 			<section style={{ marginBottom: "2rem" }}>
 				<h2>1. React Component</h2>

@@ -7,7 +7,7 @@
     "build": "turbo build",
     "typecheck": "turbo typecheck",
     "dev": "turbo dev",
-    "preview": "turbo build && turbo preview --filter=@mf/shell"
+    "preview": "turbo preview"
   },
   "pnpm": {
     "onlyBuiltDependencies": ["@typescript/native-preview"],
