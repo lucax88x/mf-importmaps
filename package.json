@@ -1,0 +1,17 @@
+{
+  "name": "mf-importmaps",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.27.0",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "preview": "turbo build && turbo preview --filter=@mf/shell"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  },
+  "devDependencies": {
+    "turbo": "^2"
+  }
+}
