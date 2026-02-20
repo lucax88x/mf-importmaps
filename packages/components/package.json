@@ -25,7 +25,8 @@
   },
   "files": ["dist"],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "vite build && tsgo -p tsconfig.build.json",
+    "typecheck": "tsgo --noEmit",
     "dev": "vite --host"
   },
   "dependencies": {
@@ -35,8 +36,8 @@
   "devDependencies": {
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^4",
-    "typescript": "^5",
-    "vite": "^6"
+    "@typescript/native-preview": "^7.0.0-dev",
+    "@vitejs/plugin-react": "^5",
+    "vite": "8.0.0-beta.15"
   }
 }

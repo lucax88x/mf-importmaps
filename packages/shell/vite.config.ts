@@ -51,7 +51,7 @@ function importMapPlugin(): Plugin {
 			if (isBuild) {
 				return {
 					build: {
-						rollupOptions: {
+						rolldownOptions: {
 							external: (id: string) =>
 								/^@mf\/components(\/|$)/.test(id) || /^react(-dom)?(\/|$)/.test(id),
 							output: {

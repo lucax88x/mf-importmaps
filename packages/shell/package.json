@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "typecheck": "tsgo --noEmit",
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
@@ -16,8 +17,8 @@
     "@mf/components": "workspace:*",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^4",
-    "typescript": "^5",
-    "vite": "^6"
+    "@typescript/native-preview": "^7.0.0-dev",
+    "@vitejs/plugin-react": "^5",
+    "vite": "8.0.0-beta.15"
   }
 }

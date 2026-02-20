@@ -17,7 +17,7 @@ const libOptions: LibraryOptions = {
   formats: ['es'],
 }
 
-const buildExternal: BuildOptions['rollupOptions'] = {
+const buildExternal: BuildOptions['rolldownOptions'] = {
   external: (id: string) => /^react(-dom)?(\/|$)/.test(id),
 }
 
@@ -36,7 +36,7 @@ function libraryDevPlugin(): Plugin {
           plugins: [react()],
           build: {
             lib: libOptions,
-            rollupOptions: buildExternal,
+            rolldownOptions: buildExternal,
             emptyOutDir: true,
           },
           logLevel: 'warn',
@@ -90,6 +90,6 @@ export default defineConfig({
   },
   build: {
     lib: libOptions,
-    rollupOptions: buildExternal,
+    rolldownOptions: buildExternal,
   },
 })
