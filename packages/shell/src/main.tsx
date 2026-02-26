@@ -3,6 +3,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
+console.log("Starting microfrontend shell...");
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(

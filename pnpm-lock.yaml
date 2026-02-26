@@ -12,6 +12,12 @@ importers:
         specifier: ^2
         version: 2.8.10
 
+  infra/vite:
+    devDependencies:
+      vite:
+        specifier: 8.0.0-beta.15
+        version: 8.0.0-beta.15
+
   packages/components:
     dependencies:
       '@tanstack/react-query':

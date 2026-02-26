@@ -1,0 +1,9 @@
+{
+	"name": "@mf/infra-vite",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"devDependencies": {
+		"vite": "8.0.0-beta.15"
+	}
+}
