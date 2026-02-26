@@ -2,29 +2,31 @@ import type { Plugin } from "vite";
 
 type ImportMapConfig = {
 	imports: Record<string, string>;
-	external: RegExp[];
+	verbose?: boolean;
 };
 
 function getBasePackageName(specifier: string): string {
 	if (specifier.startsWith("@")) {
-		// @scope/name/sub -> @scope/name
 		const parts = specifier.split("/");
 		return parts.slice(0, 2).join("/");
 	}
-	// name/sub -> name
 	return specifier.split("/")[0];
 }
 
-export const createImportMap = (config: ImportMapConfig) => {
-	const { imports, external } = config;
+function escapeRegExp(str: string): string {
+	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
-	const exclude = [
-		...new Set(
-			Object.keys(imports)
-				.filter((key) => external.some((re) => re.test(key)))
-				.map(getBasePackageName),
-		),
-	];
+export const createImportMap = (config: ImportMapConfig) => {
+	const { imports, verbose = false } = config;
+
+	const baseNames = new Set(Object.keys(imports).map(getBasePackageName));
+
+	const externalPatterns = [...baseNames].map(
+		(name) => new RegExp(`^${escapeRegExp(name)}(\\/|$)`),
+	);
+
+	const exclude = [...baseNames];
 
 	const plugin = (): Plugin => {
 		let isBuild = false;
@@ -37,21 +39,13 @@ export const createImportMap = (config: ImportMapConfig) => {
 				isBuild = command === "build";
 
 				if (!isBuild) {
-					return;
+					return undefined;
 				}
 
 				return {
 					build: {
 						rolldownOptions: {
-							external: (id: string) => {
-								const isExternal = external.some((re) => re.test(id));
-
-								console.info(
-									`[import-map] ${isExternal ? "EXTERNAL" : "BUNDLED "} ${id}`,
-								);
-
-								return isExternal;
-							},
+							external: externalPatterns,
 							output: {
 								format: "es" as const,
 							},
@@ -62,21 +56,18 @@ export const createImportMap = (config: ImportMapConfig) => {
 
 			resolveId(source) {
 				if (isBuild) {
-					return;
+					return undefined;
 				}
 
 				if (source in imports) {
-					const resolved = imports[source as keyof typeof imports];
-
-					console.log(
-						`[import-map] resolveId EXTERNAL ${source} -> ${resolved}`,
-					);
-					return {
-						id: resolved,
-						external: true,
-					};
+					const resolved = imports[source];
+					if (verbose) {
+						console.log(`[import-map] EXTERNAL ${source} -> ${resolved}`);
+					}
+					return { id: resolved, external: true };
 				}
-				console.log(`[import-map] resolveId BUNDLED ${source}`);
+
+				return undefined;
 			},
 
 			transformIndexHtml: {
@@ -144,10 +135,16 @@ export const createExportsPlugin = (
 
 		configureServer(server) {
 			server.middlewares.use((req, _res, next) => {
-				const rewrite = rewrites.get(req.url!);
+				if (!req.url) {
+					next();
+					return;
+				}
+
+				const rewrite = rewrites.get(req.url);
 				if (rewrite) {
 					req.url = rewrite;
 				}
+
 				next();
 			});
 		},

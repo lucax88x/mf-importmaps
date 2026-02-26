@@ -14,7 +14,6 @@ const importMaps = createImportMap({
 		"@tanstack/react-query":
 			"https://esm.sh/@tanstack/react-query@^5?external=react",
 	},
-	external: [/^react(-dom)?(\/|$)/, /^@tanstack\/react-query(\/|$)/],
 });
 
 const exportsPlugin = createExportsPlugin({

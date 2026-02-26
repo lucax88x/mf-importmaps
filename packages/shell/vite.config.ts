@@ -2,7 +2,6 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { createImportMap } from "../../infra/vite/import-maps";
 
-// TODO: compute external from imports?
 const importMaps = createImportMap({
 	imports: {
 		"@mf/components": "http://localhost:5251/index.js",
@@ -18,11 +17,6 @@ const importMaps = createImportMap({
 		"@tanstack/react-query":
 			"https://esm.sh/@tanstack/react-query@^5?external=react",
 	},
-	external: [
-		/^@mf\/components(\/|$)/,
-		/^react(-dom)?(\/|$)/,
-		/^@tanstack\/react-query(\/|$)/,
-	],
 });
 
 export default defineConfig({
