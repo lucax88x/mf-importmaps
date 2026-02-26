@@ -7,11 +7,14 @@ const IMPORT_MAP = {
 		"@mf/components/button": "http://localhost:5174/button.js",
 		"@mf/components/mf-button": "http://localhost:5174/mf-button.js",
 		"@mf/components/calculate": "http://localhost:5174/calculate.js",
+		"@mf/components/post-list": "http://localhost:5174/post-list.js",
 
 		react: "https://esm.sh/react@^19",
 		"react/jsx-runtime": "https://esm.sh/react@^19/jsx-runtime",
 		"react/jsx-dev-runtime": "https://esm.sh/react@^19/jsx-dev-runtime",
 		"react-dom/client": "https://esm.sh/react-dom@^19/client?external=react",
+		"@tanstack/react-query":
+			"https://esm.sh/@tanstack/react-query@^5?external=react",
 	},
 };
 
@@ -30,7 +33,8 @@ function importMapPlugin(): Plugin {
 						rolldownOptions: {
 							external: (id: string) =>
 								/^@mf\/components(\/|$)/.test(id) ||
-								/^react(-dom)?(\/|$)/.test(id),
+								/^react(-dom)?(\/|$)/.test(id) ||
+								/^@tanstack\/react-query(\/|$)/.test(id),
 							output: {
 								format: "es" as const,
 							},
@@ -79,6 +83,6 @@ export default defineConfig({
 		host: true,
 	},
 	optimizeDeps: {
-		exclude: ["@mf/components"],
+		exclude: ["@mf/components", "@tanstack/react-query"],
 	},
 });

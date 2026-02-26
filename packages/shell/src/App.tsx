@@ -1,9 +1,40 @@
 import { Button, MfButton } from "@mf/components";
 import { calculate } from "@mf/components/calculate";
+import { PostList } from "@mf/components/post-list";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 // Reference MfButton so the import isn't dropped (it registers the custom element)
 console.log("Web component registered:", MfButton.name);
+
+interface User {
+	id: number;
+	name: string;
+	email: string;
+}
+
+function ShellUserList() {
+	const { data, isLoading, error } = useQuery<User[]>({
+		queryKey: ["users"],
+		queryFn: () =>
+			fetch("https://jsonplaceholder.typicode.com/users?_limit=5").then((res) =>
+				res.json(),
+			),
+	});
+
+	if (isLoading) return <p>Loading users...</p>;
+	if (error) return <p>Error: {(error as Error).message}</p>;
+
+	return (
+		<ul style={{ textAlign: "left", paddingLeft: "1.5rem" }}>
+			{data?.map((user) => (
+				<li key={user.id} style={{ marginBottom: "0.5rem" }}>
+					<strong>{user.name}</strong> — {user.email}
+				</li>
+			))}
+		</ul>
+	);
+}
 
 export default function App() {
 	const [count, setCount] = useState(0);
@@ -57,6 +88,24 @@ export default function App() {
 						Result: {result}
 					</p>
 				)}
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
+				<h2>4. React Query — Remote Component</h2>
+				<p>
+					<code>PostList</code> from <code>@mf/components</code> uses{" "}
+					<code>useQuery</code> internally:
+				</p>
+				<PostList />
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
+				<h2>5. React Query — Shell Local</h2>
+				<p>
+					<code>useQuery</code> used directly in the shell app (same{" "}
+					<code>QueryClient</code>):
+				</p>
+				<ShellUserList />
 			</section>
 		</div>
 	);

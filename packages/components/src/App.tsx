@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "./exports/Button";
+import { PostList } from "./exports/PostList";
 import { calculate } from "./exports/calculate";
 import "./exports/MfButton";
 
@@ -53,6 +54,15 @@ export default function App() {
 						Result: {result}
 					</p>
 				)}
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
+				<h2>4. React Query Component</h2>
+				<p>
+					<code>PostList</code> uses <code>@tanstack/react-query</code>{" "}
+					internally:
+				</p>
+				<PostList />
 			</section>
 		</div>
 	);
