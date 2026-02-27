@@ -1,8 +1,13 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import type { Plugin } from "vite";
 
 type ImportMapConfig = {
 	imports: Record<string, string>;
 	verbose?: boolean;
+	/** Map placeholders to dev URLs (e.g., "/__MF_COMPONENTS__" -> "http://localhost:5251").
+	 *  Build output keeps placeholders (for nginx envsubst), dev/preview replaces them with local URLs. */
+	devBaseReplace?: Record<string, string>;
 };
 
 function getBasePackageName(specifier: string): string {
@@ -18,7 +23,7 @@ function escapeRegExp(str: string): string {
 }
 
 export const createImportMap = (config: ImportMapConfig) => {
-	const { imports, verbose = false } = config;
+	const { imports, verbose = false, devBaseReplace } = config;
 
 	const baseNames = new Set(Object.keys(imports).map(getBasePackageName));
 
@@ -27,6 +32,18 @@ export const createImportMap = (config: ImportMapConfig) => {
 	);
 
 	const exclude = [...baseNames];
+
+	const devImports = devBaseReplace
+		? Object.fromEntries(
+				Object.entries(imports).map(([key, url]) => {
+					let resolved = url;
+					for (const [from, to] of Object.entries(devBaseReplace)) {
+						resolved = resolved.replace(from, to);
+					}
+					return [key, resolved];
+				}),
+			)
+		: imports;
 
 	const plugin = (): Plugin => {
 		let isBuild = false;
@@ -59,8 +76,8 @@ export const createImportMap = (config: ImportMapConfig) => {
 					return undefined;
 				}
 
-				if (source in imports) {
-					const resolved = imports[source];
+				if (source in devImports) {
+					const resolved = devImports[source];
 					if (verbose) {
 						console.log(`[import-map] EXTERNAL ${source} -> ${resolved}`);
 					}
@@ -73,15 +90,48 @@ export const createImportMap = (config: ImportMapConfig) => {
 			transformIndexHtml: {
 				order: "post",
 				handler() {
+					const resolvedImports = isBuild ? imports : devImports;
 					return [
 						{
 							tag: "script",
 							attrs: { type: "importmap" },
-							children: JSON.stringify({ imports }, null, 2),
+							children: JSON.stringify({ imports: resolvedImports }, null, 2),
 							injectTo: "head-prepend" as const,
 						},
 					];
 				},
+			},
+
+			configurePreviewServer(server) {
+				if (!devBaseReplace) return;
+
+				const replaceEntries = Object.entries(devBaseReplace);
+
+				server.middlewares.use((req, res, next) => {
+					const url = req.url || "/";
+					if (url !== "/" && !url.endsWith(".html")) {
+						next();
+						return;
+					}
+
+					const htmlPath = url === "/" ? "index.html" : url.slice(1);
+					const fullPath = resolve(
+						server.config.root,
+						server.config.build.outDir,
+						htmlPath,
+					);
+
+					try {
+						let html = readFileSync(fullPath, "utf-8");
+						for (const [placeholder, devUrl] of replaceEntries) {
+							html = html.replaceAll(placeholder, devUrl);
+						}
+						res.setHeader("Content-Type", "text/html");
+						res.end(html);
+					} catch {
+						next();
+					}
+				});
 			},
 		};
 	};

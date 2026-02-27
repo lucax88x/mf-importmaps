@@ -59,8 +59,8 @@ importers:
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@mf/components':
-        specifier: workspace:*
-        version: link:../components
+        specifier: file:../../.local-packages/mf-components-0.0.0.tgz
+        version: file:.local-packages/mf-components-0.0.0.tgz
       '@types/react':
         specifier: ^19
         version: 19.2.14
@@ -186,6 +186,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@mf/components@file:.local-packages/mf-components-0.0.0.tgz':
+    resolution: {integrity: sha512-2sJl3VKvMVLHa6clgK0uQrj3GgXcj2mAIYaqKlTIUwoiaT/tu20JjEcxtU0XyAQWKgQbV44j6ojJLUdgo7maPw==, tarball: file:.local-packages/mf-components-0.0.0.tgz}
+    version: 0.0.0
 
   '@napi-rs/wasm-runtime@1.1.1':
     resolution: {integrity: sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A==}
@@ -791,6 +795,12 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@mf/components@file:.local-packages/mf-components-0.0.0.tgz':
+    dependencies:
+      '@tanstack/react-query': 5.90.21(react@19.2.4)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
 
   '@napi-rs/wasm-runtime@1.1.1':
     dependencies:

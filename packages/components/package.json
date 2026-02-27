@@ -3,6 +3,9 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"files": [
+		"types"
+	],
 	"exports": {
 		".": {
 			"types": "./types/exports/index.d.ts"
@@ -16,6 +19,7 @@
 	},
 	"scripts": {
 		"build": "vite build && rm -rf types && tsgo -p tsconfig.build.json",
+		"publish:local": "mkdir -p ../../.local-packages && npm pack --pack-destination ../../.local-packages",
 		"typecheck": "tsgo --noEmit",
 		"preview": "vite preview",
 		"dev": "vite --host"
