@@ -66,3 +66,8 @@ The components library exports:
 ## Tech Stack
 
 Vite 6, React 19, TypeScript 5, ES Modules throughout. No linting or test framework configured.
+
+
+## update /etc/hosts to point to local servers for nginx proxy:
+127.0.0.1 components.local
+127.0.0.1 shell.local

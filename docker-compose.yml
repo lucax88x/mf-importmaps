@@ -1,0 +1,22 @@
+services:
+  components:
+    build:
+      context: .
+      dockerfile: packages/components/Dockerfile
+
+  shell:
+    build:
+      context: .
+      dockerfile: packages/shell/Dockerfile
+    environment:
+      MF_COMPONENTS_URL: http://components.local
+
+  proxy:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - shell
+      - components

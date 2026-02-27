@@ -5,7 +5,7 @@ import type { Plugin } from "vite";
 type ImportMapConfig = {
 	imports: Record<string, string>;
 	verbose?: boolean;
-	/** Map placeholders to dev URLs (e.g., "/__MF_COMPONENTS__" -> "http://localhost:5251").
+	/** Map placeholders to dev URLs (e.g., "${MF_COMPONENTS_URL}" -> "http://localhost:5251").
 	 *  Build output keeps placeholders (for nginx envsubst), dev/preview replaces them with local URLs. */
 	devBaseReplace?: Record<string, string>;
 };

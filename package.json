@@ -1,23 +1,26 @@
 {
-  "name": "mf-importmaps",
-  "private": true,
-  "type": "module",
-  "packageManager": "pnpm@10.27.0",
-  "scripts": {
-    "build": "turbo build",
-    "typecheck": "turbo typecheck",
-    "dev": "turbo dev",
-    "preview": "turbo preview"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["@typescript/native-preview"],
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "@vitejs/plugin-react>vite": "8"
-      }
-    }
-  },
-  "devDependencies": {
-    "turbo": "^2"
-  }
+	"name": "mf-importmaps",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@10.27.0",
+	"scripts": {
+		"build": "turbo build",
+		"typecheck": "turbo typecheck",
+		"docker:up": "docker compose up --build",
+		"dev": "turbo dev",
+		"preview": "turbo preview"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@typescript/native-preview"
+		],
+		"peerDependencyRules": {
+			"allowedVersions": {
+				"@vitejs/plugin-react>vite": "8"
+			}
+		}
+	},
+	"devDependencies": {
+		"turbo": "^2"
+	}
 }

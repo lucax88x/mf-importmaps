@@ -4,11 +4,11 @@ import { createImportMap } from "../../infra/vite/import-maps";
 
 const importMaps = createImportMap({
 	imports: {
-		"@mf/components": "/__MF_COMPONENTS__/index.js",
-		"@mf/components/button": "/__MF_COMPONENTS__/button.js",
-		"@mf/components/mf-button": "/__MF_COMPONENTS__/mf-button.js",
-		"@mf/components/calculate": "/__MF_COMPONENTS__/calculate.js",
-		"@mf/components/post-list": "/__MF_COMPONENTS__/post-list.js",
+		"@mf/components": "${MF_COMPONENTS_URL}/index.js",
+		"@mf/components/button": "${MF_COMPONENTS_URL}/button.js",
+		"@mf/components/mf-button": "${MF_COMPONENTS_URL}/mf-button.js",
+		"@mf/components/calculate": "${MF_COMPONENTS_URL}/calculate.js",
+		"@mf/components/post-list": "${MF_COMPONENTS_URL}/post-list.js",
 
 		react: "https://esm.sh/react@^19",
 		"react/jsx-runtime": "https://esm.sh/react@^19/jsx-runtime",
@@ -18,7 +18,7 @@ const importMaps = createImportMap({
 			"https://esm.sh/@tanstack/react-query@^5?external=react",
 	},
 	devBaseReplace: {
-		"/__MF_COMPONENTS__": "http://localhost:5251",
+		"${MF_COMPONENTS_URL}": "http://localhost:5251",
 	},
 });
 
