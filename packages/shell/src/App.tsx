@@ -1,6 +1,7 @@
 import { Button, MfButton } from "@mf/components";
 import { calculate } from "@mf/components/calculate";
 import { PostList } from "@mf/components/PostList";
+import { YellowButton } from "@mf/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { LazySlowButton } from "./LazySlowButton";
@@ -110,8 +111,16 @@ export default function App() {
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>
+				<h2>6. YellowButton from @mf/ui (direct)</h2>
+				<p>
+					Imported directly from <code>@mf/ui</code> in the shell:
+				</p>
+				<YellowButton label="Direct from @mf/ui in shell!" />
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
 				<h2>Slow import</h2>
-				<LazySlowButton text="ciao" />
+				<LazySlowButton text2="ciao" />
 			</section>
 		</div>
 	);

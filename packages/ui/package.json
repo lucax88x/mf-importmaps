@@ -1,7 +1,7 @@
 {
-	"name": "@mf/components",
+	"name": "@mf/ui",
 	"private": true,
-	"version": "0.0.3",
+	"version": "0.0.1",
 	"type": "module",
 	"files": [
 		"types"
@@ -23,13 +23,11 @@
 	},
 	"dependencies": {
 		"@tailwindcss/vite": "^4.2.1",
-		"@tanstack/react-query": "^5",
 		"react": "^19",
 		"react-dom": "^19",
 		"tailwindcss": "^4.2.1"
 	},
 	"devDependencies": {
-		"@mf/ui": "file:../../.local-packages/mf-ui-0.0.1.tgz",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"@typescript/native-preview": "^7.0.0-dev",

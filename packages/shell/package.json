@@ -20,6 +20,7 @@
 	},
 	"devDependencies": {
 		"@mf/components": "file:../../.local-packages/mf-components-0.0.3.tgz",
+		"@mf/ui": "file:../../.local-packages/mf-ui-0.0.1.tgz",
 		"@typescript/native-preview": "^7.0.0-dev",
 		"@vitejs/plugin-react": "^5",
 		"vite": "8.0.0-beta.15"

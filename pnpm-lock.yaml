@@ -36,6 +36,9 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1
     devDependencies:
+      '@mf/ui':
+        specifier: file:../../.local-packages/mf-ui-0.0.1.tgz
+        version: file:.local-packages/mf-ui-0.0.1.tgz(vite@8.0.0-beta.15(jiti@2.6.1))
       '@types/react':
         specifier: ^19
         version: 19.2.14
@@ -79,6 +82,40 @@ importers:
       '@mf/components':
         specifier: file:../../.local-packages/mf-components-0.0.3.tgz
         version: file:.local-packages/mf-components-0.0.3.tgz(vite@8.0.0-beta.15(jiti@2.6.1))
+      '@mf/ui':
+        specifier: file:../../.local-packages/mf-ui-0.0.1.tgz
+        version: file:.local-packages/mf-ui-0.0.1.tgz(vite@8.0.0-beta.15(jiti@2.6.1))
+      '@typescript/native-preview':
+        specifier: ^7.0.0-dev
+        version: 7.0.0-dev.20260220.1
+      '@vitejs/plugin-react':
+        specifier: ^5
+        version: 5.1.4(vite@8.0.0-beta.15(jiti@2.6.1))
+      vite:
+        specifier: 8.0.0-beta.15
+        version: 8.0.0-beta.15(jiti@2.6.1)
+
+  packages/ui:
+    dependencies:
+      '@tailwindcss/vite':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@8.0.0-beta.15(jiti@2.6.1))
+      react:
+        specifier: ^19
+        version: 19.2.4
+      react-dom:
+        specifier: ^19
+        version: 19.2.4(react@19.2.4)
+      tailwindcss:
+        specifier: ^4.2.1
+        version: 4.2.1
+    devDependencies:
+      '@types/react':
+        specifier: ^19
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19
+        version: 19.2.3(@types/react@19.2.14)
       '@typescript/native-preview':
         specifier: ^7.0.0-dev
         version: 7.0.0-dev.20260220.1
@@ -200,8 +237,12 @@ packages:
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@mf/components@file:.local-packages/mf-components-0.0.3.tgz':
-    resolution: {integrity: sha512-zd8tM1jmF0Z8TBoE2NfDWzPVE7zwoDYSi88tjKacTUwvneqYOinsS2SB8BY/S7gpp4l4d6qjIpNWsc2qxp7hlg==, tarball: file:.local-packages/mf-components-0.0.3.tgz}
+    resolution: {integrity: sha512-cBR8+4S11Sao3oO8H7bdF+GjHtc+OciMjYjK+4hOl7Dgd8nHmNVB3n6WdNxZGmoWaCA/EeKBuQ09e0giVh4SEQ==, tarball: file:.local-packages/mf-components-0.0.3.tgz}
     version: 0.0.3
+
+  '@mf/ui@file:.local-packages/mf-ui-0.0.1.tgz':
+    resolution: {integrity: sha512-8FNKsYQgMznaWsI3p+RsrEzjHJ6BJZe1xfhfq0rqZB+6FyirCYvhILC92dmkKfd3MPtTitOGmSKY3cGG+H2uKA==, tarball: file:.local-packages/mf-ui-0.0.1.tgz}
+    version: 0.0.1
 
   '@napi-rs/wasm-runtime@1.1.1':
     resolution: {integrity: sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A==}
@@ -923,6 +964,15 @@ snapshots:
     dependencies:
       '@tailwindcss/vite': 4.2.1(vite@8.0.0-beta.15(jiti@2.6.1))
       '@tanstack/react-query': 5.90.21(react@19.2.4)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      tailwindcss: 4.2.1
+    transitivePeerDependencies:
+      - vite
+
+  '@mf/ui@file:.local-packages/mf-ui-0.0.1.tgz(vite@8.0.0-beta.15(jiti@2.6.1))':
+    dependencies:
+      '@tailwindcss/vite': 4.2.1(vite@8.0.0-beta.15(jiti@2.6.1))
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
       tailwindcss: 4.2.1

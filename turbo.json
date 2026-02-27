@@ -5,6 +5,10 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"]
 		},
+		"publish:local": {
+			"dependsOn": ["^publish:local"],
+			"outputs": ["dist/**"]
+		},
 		"typecheck": {
 			"dependsOn": ["^build"]
 		},

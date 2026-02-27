@@ -5,6 +5,9 @@ import { createImportMap, external } from "../../infra/vite/import-maps";
 
 const importMaps = createImportMap({
 	imports: {
+		"@mf/ui": "${MF_UI_URL}/index.js",
+		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
+
 		"@mf/components": "${MF_COMPONENTS_URL}/index.js",
 		"@mf/components/button": "${MF_COMPONENTS_URL}/button.js",
 		"@mf/components/mf-button": "${MF_COMPONENTS_URL}/mf-button.js",
@@ -21,6 +24,7 @@ const importMaps = createImportMap({
 		}),
 	},
 	devBaseReplace: {
+		"${MF_UI_URL}": "http://localhost:5252",
 		"${MF_COMPONENTS_URL}": "http://localhost:5251",
 	},
 });

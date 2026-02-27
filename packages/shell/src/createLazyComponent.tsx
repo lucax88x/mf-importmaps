@@ -37,7 +37,7 @@ interface LazyOptions {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createLazyComponent<T extends ComponentType<any>>(
-	factory: Parameters<typeof lazy>[0],
+	factory: () => Promise<{ default: T }>,
 	options?: LazyOptions,
 ) {
 	const LazyComponent = lazy(factory);
@@ -47,7 +47,7 @@ export function createLazyComponent<T extends ComponentType<any>>(
 			fallback={options?.error ?? <div>Failed to load component.</div>}
 		>
 			<Suspense fallback={options?.loading ?? <div>Loading...</div>}>
-				<LazyComponent {...(props as Record<string, unknown>)} />
+				<LazyComponent {...props} />
 			</Suspense>
 		</ErrorBoundary>
 	);

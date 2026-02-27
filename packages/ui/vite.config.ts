@@ -9,40 +9,27 @@ import {
 
 const importMaps = createImportMap({
 	imports: {
-		"@mf/ui": "${MF_UI_URL}/index.js",
-		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
-
 		react: external("react"),
 		"react/jsx-runtime": external("react/jsx-runtime"),
 		"react/jsx-dev-runtime": external("react/jsx-dev-runtime"),
 		"react-dom/client": external("react-dom/client", { externals: ["react"] }),
-		"@tanstack/react-query": external("@tanstack/react-query", {
-			externals: ["react"],
-		}),
-	},
-	devBaseReplace: {
-		"${MF_UI_URL}": "http://localhost:5252",
 	},
 });
 
 const exportsPlugin = createExportsPlugin({
 	index: "src/exports/index.ts",
-	button: "src/exports/Button.tsx",
-	"mf-button": "src/exports/MfButton.ts",
-	calculate: "src/exports/calculate.ts",
-	"PostList": "src/exports/PostList.tsx",
-	"SlowButton": "src/exports/SlowButton.tsx",
+	YellowButton: "src/exports/YellowButton.tsx",
 });
 
 export default defineConfig({
 	plugins: [tailwindcss(), react(), importMaps.plugin(), exportsPlugin],
 	server: {
-		port: 5251,
+		port: 5252,
 		strictPort: true,
 		host: true,
 	},
 	preview: {
-		port: 5251,
+		port: 5252,
 		strictPort: true,
 		host: true,
 	},

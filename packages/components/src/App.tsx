@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "./exports/Button";
 import { PostList } from "./exports/PostList";
 import { calculate } from "./exports/calculate";
+import { YellowButton } from "@mf/ui";
 import "./exports/MfButton";
 
 export default function App() {
@@ -57,7 +58,15 @@ export default function App() {
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>
-				<h2>4. React Query Component</h2>
+				<h2>4. YellowButton from @mf/ui</h2>
+				<p>
+					Imported from <code>@mf/ui</code> (multi-level dependency):
+				</p>
+				<YellowButton label="I come from @mf/ui!" />
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
+				<h2>5. React Query Component</h2>
 				<p>
 					<code>PostList</code> uses <code>@tanstack/react-query</code>{" "}
 					internally:
