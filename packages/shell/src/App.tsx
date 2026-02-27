@@ -1,42 +1,22 @@
 import { Button, MfButton } from "@mf/components";
+import { BaseSelect } from "@mf/ui/BaseSelect";
 import { calculate } from "@mf/components/calculate";
+import { MuiSelect } from "@mf/ui/MuiSelect";
 import { PostList } from "@mf/components/PostList";
 import { YellowButton } from "@mf/ui";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { LazySlowButton } from "./LazySlowButton";
+import { ShellUserList } from "./ShellUserList";
 
 // Reference MfButton so the import isn't dropped (it registers the custom element)
 console.log("Web component registered:", MfButton.name);
 
-interface User {
-	id: number;
-	name: string;
-	email: string;
-}
-
-function ShellUserList() {
-	const { data, isLoading, error } = useQuery<User[]>({
-		queryKey: ["users"],
-		queryFn: () =>
-			fetch("https://jsonplaceholder.typicode.com/users?_limit=5").then((res) =>
-				res.json(),
-			),
-	});
-
-	if (isLoading) return <p>Loading users...</p>;
-	if (error) return <p>Error: {(error as Error).message}</p>;
-
-	return (
-		<ul className="text-left pl-6 space-y-2">
-			{data?.map((user) => (
-				<li key={user.id} className="text-blue-600 font-semibold">
-					{user.name} — {user.email}
-				</li>
-			))}
-		</ul>
-	);
-}
+const fruitOptions = [
+	{ value: "apple", label: "Apple" },
+	{ value: "banana", label: "Banana" },
+	{ value: "cherry", label: "Cherry" },
+	{ value: "dragonfruit", label: "Dragonfruit" },
+];
 
 export default function App() {
 	const [count, setCount] = useState(0);
@@ -116,6 +96,16 @@ export default function App() {
 					Imported directly from <code>@mf/ui</code> in the shell:
 				</p>
 				<YellowButton label="Direct from @mf/ui in shell!" />
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
+				<h2>MUI Select</h2>
+				<MuiSelect label="Fruit" options={fruitOptions} />
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
+				<h2>Base Select</h2>
+				<BaseSelect options={fruitOptions} />
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>

@@ -1,6 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { build } from "../../infra/vite/build";
 import {
 	createExportsPlugin,
 	createImportMap,
@@ -13,6 +14,7 @@ const importMaps = createImportMap({
 		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
 
 		react: external("react"),
+		"react-dom": external("react-dom", { externals: ["react"] }),
 		"react/jsx-runtime": external("react/jsx-runtime"),
 		"react/jsx-dev-runtime": external("react/jsx-dev-runtime"),
 		"react-dom/client": external("react-dom/client", { externals: ["react"] }),
@@ -30,8 +32,8 @@ const exportsPlugin = createExportsPlugin({
 	button: "src/exports/Button.tsx",
 	"mf-button": "src/exports/MfButton.ts",
 	calculate: "src/exports/calculate.ts",
-	"PostList": "src/exports/PostList.tsx",
-	"SlowButton": "src/exports/SlowButton.tsx",
+	PostList: "src/exports/PostList.tsx",
+	SlowButton: "src/exports/SlowButton.tsx",
 });
 
 export default defineConfig({
@@ -47,4 +49,5 @@ export default defineConfig({
 		host: true,
 	},
 	optimizeDeps: { ...importMaps.optimizeDeps },
+	build: build,
 });

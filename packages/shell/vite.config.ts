@@ -1,12 +1,15 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { build } from "../../infra/vite/build";
 import { createImportMap, external } from "../../infra/vite/import-maps";
 
 const importMaps = createImportMap({
 	imports: {
 		"@mf/ui": "${MF_UI_URL}/index.js",
 		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
+		"@mf/ui/MuiSelect": "${MF_UI_URL}/MuiSelect.js",
+		"@mf/ui/BaseSelect": "${MF_UI_URL}/BaseSelect.js",
 
 		"@mf/components": "${MF_COMPONENTS_URL}/index.js",
 		"@mf/components/button": "${MF_COMPONENTS_URL}/button.js",
@@ -16,6 +19,7 @@ const importMaps = createImportMap({
 		"@mf/components/SlowButton": "${MF_COMPONENTS_URL}/SlowButton.js",
 
 		react: external("react"),
+		"react-dom": external("react-dom", { externals: ["react"] }),
 		"react/jsx-runtime": external("react/jsx-runtime"),
 		"react/jsx-dev-runtime": external("react/jsx-dev-runtime"),
 		"react-dom/client": external("react-dom/client", { externals: ["react"] }),
@@ -42,4 +46,5 @@ export default defineConfig({
 		host: true,
 	},
 	optimizeDeps: { ...importMaps.optimizeDeps },
+	build: build,
 });

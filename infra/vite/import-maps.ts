@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import type { Plugin } from "vite";
+import { esmExternalRequirePlugin, type Plugin } from "vite";
 import { parse as parseYaml } from "yaml";
 
 let _deps: Record<string, string> | null = null;
@@ -126,6 +126,11 @@ export const createImportMap = (config: ImportMapConfig) => {
 							output: {
 								format: "es" as const,
 							},
+							// plugins: [
+							// 	esmExternalRequirePlugin({
+							// 		external: [/^react(-dom)?(\/.+)?$/],
+							// 	}),
+							// ],
 						},
 					},
 				};
