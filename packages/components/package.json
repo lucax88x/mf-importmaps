@@ -23,15 +23,15 @@
 	},
 	"dependencies": {
 		"@tailwindcss/vite": "^4.2.1",
-		"@tanstack/react-query": "^5",
-		"react": "^19",
-		"react-dom": "^19",
+		"@tanstack/react-query": "catalog:react",
+		"react": "catalog:react",
+		"react-dom": "catalog:react",
 		"tailwindcss": "^4.2.1"
 	},
 	"devDependencies": {
 		"@mf/ui": "file:../../.local-packages/mf-ui-0.0.1.tgz",
-		"@types/react": "^19",
-		"@types/react-dom": "^19",
+		"@types/react": "catalog:react",
+		"@types/react-dom": "catalog:react",
 		"@typescript/native-preview": "^7.0.0-dev",
 		"@vitejs/plugin-react": "^5",
 		"vite": "8.0.0-beta.15"

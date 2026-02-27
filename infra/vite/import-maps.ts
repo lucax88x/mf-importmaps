@@ -1,18 +1,40 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import type { Plugin } from "vite";
+import { parse as parseYaml } from "yaml";
 
 let _deps: Record<string, string> | null = null;
+
+function findWorkspaceRoot(from: string): string {
+	let dir = from;
+	while (true) {
+		if (existsSync(resolve(dir, "pnpm-workspace.yaml"))) {
+			return dir;
+		}
+		const parent = dirname(dir);
+		if (parent === dir) {
+			throw new Error("Could not find pnpm-workspace.yaml");
+		}
+		dir = parent;
+	}
+}
 
 function getDeps(): Record<string, string> {
 	if (_deps) {
 		return _deps;
 	}
 
-	const pkgPath = resolve(process.cwd(), "package.json");
-	const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+	const root = findWorkspaceRoot(process.cwd());
+	const wsPath = resolve(root, "pnpm-workspace.yaml");
+	const ws = parseYaml(readFileSync(wsPath, "utf-8"));
 
-	const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+	const deps: Record<string, string> = {};
+	if (ws.catalogs) {
+		for (const catalog of Object.values(ws.catalogs)) {
+			Object.assign(deps, catalog as Record<string, string>);
+		}
+	}
+
 	_deps = deps;
 	return deps;
 }
@@ -26,7 +48,7 @@ export function external(
 	const version = deps[baseName];
 	if (!version) {
 		throw new Error(
-			`Package "${baseName}" not found in package.json dependencies`,
+			`Package "${baseName}" not found in pnpm-workspace.yaml catalogs`,
 		);
 	}
 

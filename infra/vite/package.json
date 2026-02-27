@@ -5,5 +5,8 @@
 	"type": "module",
 	"devDependencies": {
 		"vite": "8.0.0-beta.15"
+	},
+	"dependencies": {
+		"yaml": "^2.8.2"
 	}
 }
