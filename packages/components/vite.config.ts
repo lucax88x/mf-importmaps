@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import {
@@ -23,11 +24,12 @@ const exportsPlugin = createExportsPlugin({
 	button: "src/exports/Button.tsx",
 	"mf-button": "src/exports/MfButton.ts",
 	calculate: "src/exports/calculate.ts",
-	"post-list": "src/exports/PostList.tsx",
+	"PostList": "src/exports/PostList.tsx",
+	"SlowButton": "src/exports/SlowButton.tsx",
 });
 
 export default defineConfig({
-	plugins: [react(), importMaps.plugin(), exportsPlugin],
+	plugins: [tailwindcss(), react(), importMaps.plugin(), exportsPlugin],
 	server: {
 		port: 5251,
 		strictPort: true,

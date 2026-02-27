@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "./Button";
 
+import "../app.css";
+
 interface Post {
 	id: number;
 	title: string;
@@ -21,10 +23,10 @@ export function PostList() {
 
 	return (
 		<div>
-			<ul style={{ textAlign: "left", paddingLeft: "1.5rem" }}>
+			<ul className="text-left pl-6 space-y-2">
 				{data?.map((post) => (
-					<li key={post.id} style={{ marginBottom: "0.5rem" }}>
-						<strong>{post.title}</strong>
+					<li key={post.id} className="text-red-600 font-semibold">
+						{post.title}
 					</li>
 				))}
 			</ul>

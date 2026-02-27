@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { createImportMap, external } from "../../infra/vite/import-maps";
@@ -8,7 +9,8 @@ const importMaps = createImportMap({
 		"@mf/components/button": "${MF_COMPONENTS_URL}/button.js",
 		"@mf/components/mf-button": "${MF_COMPONENTS_URL}/mf-button.js",
 		"@mf/components/calculate": "${MF_COMPONENTS_URL}/calculate.js",
-		"@mf/components/post-list": "${MF_COMPONENTS_URL}/post-list.js",
+		"@mf/components/PostList": "${MF_COMPONENTS_URL}/PostList.js",
+		"@mf/components/SlowButton": "${MF_COMPONENTS_URL}/SlowButton.js",
 
 		react: external("react"),
 		"react/jsx-runtime": external("react/jsx-runtime"),
@@ -24,7 +26,7 @@ const importMaps = createImportMap({
 });
 
 export default defineConfig({
-	plugins: [react(), importMaps.plugin()],
+	plugins: [tailwindcss(), react(), importMaps.plugin()],
 	server: {
 		port: 5250,
 		strictPort: true,

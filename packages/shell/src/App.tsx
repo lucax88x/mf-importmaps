@@ -1,8 +1,9 @@
 import { Button, MfButton } from "@mf/components";
 import { calculate } from "@mf/components/calculate";
-import { PostList } from "@mf/components/post-list";
+import { PostList } from "@mf/components/PostList";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { LazySlowButton } from "./LazySlowButton";
 
 // Reference MfButton so the import isn't dropped (it registers the custom element)
 console.log("Web component registered:", MfButton.name);
@@ -26,10 +27,10 @@ function ShellUserList() {
 	if (error) return <p>Error: {(error as Error).message}</p>;
 
 	return (
-		<ul style={{ textAlign: "left", paddingLeft: "1.5rem" }}>
+		<ul className="text-left pl-6 space-y-2">
 			{data?.map((user) => (
-				<li key={user.id} style={{ marginBottom: "0.5rem" }}>
-					<strong>{user.name}</strong> — {user.email}
+				<li key={user.id} className="text-blue-600 font-semibold">
+					{user.name} — {user.email}
 				</li>
 			))}
 		</ul>
@@ -106,6 +107,11 @@ export default function App() {
 					<code>QueryClient</code>):
 				</p>
 				<ShellUserList />
+			</section>
+
+			<section style={{ marginBottom: "2rem" }}>
+				<h2>Slow import</h2>
+				<LazySlowButton text="ciao" />
 			</section>
 		</div>
 	);
