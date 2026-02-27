@@ -2,6 +2,44 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { Plugin } from "vite";
 
+let _deps: Record<string, string> | null = null;
+
+function getDeps(): Record<string, string> {
+	if (_deps) {
+		return _deps;
+	}
+
+	const pkgPath = resolve(process.cwd(), "package.json");
+	const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+
+	const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+	_deps = deps;
+	return deps;
+}
+
+export function external(
+	specifier: string,
+	options?: { externals?: string[] },
+): string {
+	const baseName = getBasePackageName(specifier);
+	const deps = getDeps();
+	const version = deps[baseName];
+	if (!version) {
+		throw new Error(
+			`Package "${baseName}" not found in package.json dependencies`,
+		);
+	}
+
+	const subpath = specifier.slice(baseName.length);
+	let url = `https://esm.sh/${baseName}@${version}${subpath}`;
+
+	if (options?.externals?.length) {
+		url += `?external=${options.externals.join(",")}`;
+	}
+
+	return url;
+}
+
 type ImportMapConfig = {
 	imports: Record<string, string>;
 	verbose?: boolean;

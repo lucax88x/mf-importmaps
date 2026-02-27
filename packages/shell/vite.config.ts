@@ -1,6 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { createImportMap } from "../../infra/vite/import-maps";
+import { createImportMap, external } from "../../infra/vite/import-maps";
 
 const importMaps = createImportMap({
 	imports: {
@@ -10,12 +10,13 @@ const importMaps = createImportMap({
 		"@mf/components/calculate": "${MF_COMPONENTS_URL}/calculate.js",
 		"@mf/components/post-list": "${MF_COMPONENTS_URL}/post-list.js",
 
-		react: "https://esm.sh/react@^19",
-		"react/jsx-runtime": "https://esm.sh/react@^19/jsx-runtime",
-		"react/jsx-dev-runtime": "https://esm.sh/react@^19/jsx-dev-runtime",
-		"react-dom/client": "https://esm.sh/react-dom@^19/client?external=react",
-		"@tanstack/react-query":
-			"https://esm.sh/@tanstack/react-query@^5?external=react",
+		react: external("react"),
+		"react/jsx-runtime": external("react/jsx-runtime"),
+		"react/jsx-dev-runtime": external("react/jsx-dev-runtime"),
+		"react-dom/client": external("react-dom/client", { externals: ["react"] }),
+		"@tanstack/react-query": external("@tanstack/react-query", {
+			externals: ["react"],
+		}),
 	},
 	devBaseReplace: {
 		"${MF_COMPONENTS_URL}": "http://localhost:5251",

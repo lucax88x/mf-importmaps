@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Button } from "./Button";
 
 interface Post {
 	id: number;
@@ -19,12 +20,18 @@ export function PostList() {
 	if (error) return <p>Error loading posts: {(error as Error).message}</p>;
 
 	return (
-		<ul style={{ textAlign: "left", paddingLeft: "1.5rem" }}>
-			{data?.map((post) => (
-				<li key={post.id} style={{ marginBottom: "0.5rem" }}>
-					<strong>{post.title}</strong>
-				</li>
-			))}
-		</ul>
+		<div>
+			<ul style={{ textAlign: "left", paddingLeft: "1.5rem" }}>
+				{data?.map((post) => (
+					<li key={post.id} style={{ marginBottom: "0.5rem" }}>
+						<strong>{post.title}</strong>
+					</li>
+				))}
+			</ul>
+			<Button
+				label="Click me"
+				onClick={() => alert("Button in PostList clicked!")}
+			/>
+		</div>
 	);
 }

@@ -3,16 +3,18 @@ import { defineConfig } from "vite";
 import {
 	createExportsPlugin,
 	createImportMap,
+	external,
 } from "../../infra/vite/import-maps";
 
 const importMaps = createImportMap({
 	imports: {
-		react: "https://esm.sh/react@^19",
-		"react/jsx-runtime": "https://esm.sh/react@^19/jsx-runtime",
-		"react/jsx-dev-runtime": "https://esm.sh/react@^19/jsx-dev-runtime",
-		"react-dom/client": "https://esm.sh/react-dom@^19/client?external=react",
-		"@tanstack/react-query":
-			"https://esm.sh/@tanstack/react-query@^5?external=react",
+		react: external("react"),
+		"react/jsx-runtime": external("react/jsx-runtime"),
+		"react/jsx-dev-runtime": external("react/jsx-dev-runtime"),
+		"react-dom/client": external("react-dom/client", { externals: ["react"] }),
+		"@tanstack/react-query": external("@tanstack/react-query", {
+			externals: ["react"],
+		}),
 	},
 });
 
