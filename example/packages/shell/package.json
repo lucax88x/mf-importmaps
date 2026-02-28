@@ -1,0 +1,31 @@
+{
+	"name": "@mf/shell",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"typecheck": "tsgo --noEmit",
+		"dev": "vite --host",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.2.1",
+		"tailwindcss": "^4.2.1"
+	},
+	"devDependencies": {
+		"@mf/components": "file:../../.local-packages/mf-components-0.0.5.tgz",
+		"@mf/ui": "file:../../.local-packages/mf-ui-0.0.4.tgz",
+		"@typescript/native-preview": "^7.0.0-dev",
+		"@vitejs/plugin-react": "^5",
+		"vite": "8.0.0-beta.15",
+		"vite-plugin-import-maps": "workspace:*"
+	},
+	"peerDependencies": {
+		"react": "catalog:react",
+		"react-dom": "catalog:react",
+		"@tanstack/react-query": "catalog:react",
+		"@types/react": "catalog:react",
+		"@types/react-dom": "catalog:react"
+	}
+}

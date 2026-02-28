@@ -1,13 +1,13 @@
 services:
   components:
     build:
-      context: .
-      dockerfile: packages/components/Dockerfile
+      context: ..
+      dockerfile: example/packages/components/Dockerfile
 
   shell:
     build:
-      context: .
-      dockerfile: packages/shell/Dockerfile
+      context: ..
+      dockerfile: example/packages/shell/Dockerfile
     environment:
       MF_COMPONENTS_URL: http://components.local
 

@@ -1,17 +1,25 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { build } from "../../infra/vite/build";
 import {
-	createExportsPlugin,
+	build,
 	createImportMap,
 	external,
-} from "../../infra/vite/import-maps";
+} from "vite-plugin-import-maps";
 
 const importMaps = createImportMap({
 	imports: {
 		"@mf/ui": "${MF_UI_URL}/index.js",
 		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
+		"@mf/ui/MuiSelect": "${MF_UI_URL}/MuiSelect.js",
+		"@mf/ui/BaseSelect": "${MF_UI_URL}/BaseSelect.js",
+
+		"@mf/components": "${MF_COMPONENTS_URL}/index.js",
+		"@mf/components/button": "${MF_COMPONENTS_URL}/button.js",
+		"@mf/components/mf-button": "${MF_COMPONENTS_URL}/mf-button.js",
+		"@mf/components/calculate": "${MF_COMPONENTS_URL}/calculate.js",
+		"@mf/components/PostList": "${MF_COMPONENTS_URL}/PostList.js",
+		"@mf/components/SlowButton": "${MF_COMPONENTS_URL}/SlowButton.js",
 
 		react: external("react"),
 		"react-dom": external("react-dom", { externals: ["react"] }),
@@ -22,29 +30,22 @@ const importMaps = createImportMap({
 			externals: ["react"],
 		}),
 	},
+	esmRequireExternals: ["react", "react-dom"],
 	devBaseReplace: {
 		"${MF_UI_URL}": "http://localhost:5252",
+		"${MF_COMPONENTS_URL}": "http://localhost:5251",
 	},
 });
 
-const exportsPlugin = createExportsPlugin({
-	index: "src/exports/index.ts",
-	button: "src/exports/Button.tsx",
-	"mf-button": "src/exports/MfButton.ts",
-	calculate: "src/exports/calculate.ts",
-	PostList: "src/exports/PostList.tsx",
-	SlowButton: "src/exports/SlowButton.tsx",
-});
-
 export default defineConfig({
-	plugins: [tailwindcss(), react(), importMaps.plugin(), exportsPlugin],
+	plugins: [tailwindcss(), react(), importMaps.plugin()],
 	server: {
-		port: 5251,
+		port: 5250,
 		strictPort: true,
 		host: true,
 	},
 	preview: {
-		port: 5251,
+		port: 5250,
 		strictPort: true,
 		host: true,
 	},

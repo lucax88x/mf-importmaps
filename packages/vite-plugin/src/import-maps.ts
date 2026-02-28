@@ -62,7 +62,7 @@ export function external(
 	return url;
 }
 
-type ImportMapConfig = {
+export type ImportMapConfig = {
 	imports: Record<string, string>;
 	verbose?: boolean;
 	/** Map placeholders to dev URLs (e.g., "${MF_COMPONENTS_URL}" -> "http://localhost:5251").
@@ -139,10 +139,7 @@ export const createImportMap = (config: ImportMapConfig) => {
 						)
 					: externalPatterns;
 
-				console.log(filteredExternalPatterns);
-				console.log(esmRequireExternals);
-
-				return {
+					return {
 					build: {
 						rolldownOptions: {
 							external: filteredExternalPatterns,

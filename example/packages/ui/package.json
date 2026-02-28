@@ -1,7 +1,7 @@
 {
 	"name": "@mf/ui",
 	"private": true,
-	"version": "0.0.1",
+	"version": "0.0.4",
 	"type": "module",
 	"files": [
 		"types"
@@ -16,7 +16,7 @@
 	},
 	"scripts": {
 		"build": "vite build && rm -rf types && tsgo -p tsconfig.build.json",
-		"publish:local": "mkdir -p ../../.local-packages && npm pack --pack-destination ../../.local-packages",
+		"publish:local": "mkdir -p ../../.local-packages && pnpm pack --pack-destination ../../.local-packages",
 		"typecheck": "tsgo --noEmit",
 		"preview": "vite preview",
 		"dev": "vite --host"
@@ -27,15 +27,18 @@
 		"@emotion/styled": "^11.14.1",
 		"@mui/material": "^7.3.8",
 		"@tailwindcss/vite": "^4.2.1",
-		"react": "catalog:react",
-		"react-dom": "catalog:react",
 		"tailwindcss": "^4.2.1"
 	},
 	"devDependencies": {
-		"@types/react": "catalog:react",
-		"@types/react-dom": "catalog:react",
 		"@typescript/native-preview": "^7.0.0-dev",
 		"@vitejs/plugin-react": "^5",
-		"vite": "8.0.0-beta.15"
+		"vite": "8.0.0-beta.15",
+		"vite-plugin-import-maps": "workspace:*"
+	},
+	"peerDependencies": {
+		"react": "catalog:react",
+		"react-dom": "catalog:react",
+		"@types/react": "catalog:react",
+		"@types/react-dom": "catalog:react"
 	}
 }

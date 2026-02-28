@@ -4,12 +4,15 @@
 	"type": "module",
 	"packageManager": "pnpm@10.27.0",
 	"scripts": {
-		"build": "turbo build",
-		"typecheck": "turbo typecheck",
-		"docker:up": "docker compose up --build",
-		"publish:local": "turbo publish:local",
-		"dev": "turbo dev",
-		"preview": "turbo preview"
+		"example:build": "turbo build",
+		"example:dev": "turbo dev",
+		"example:build": "turbo build",
+		"example:typecheck": "turbo typecheck",
+		"example:publish-local": "turbo publish:local",
+		"example:preview": "turbo preview",
+		"example:docker-up": "docker compose -f example/docker-compose.yml up --build",
+		"test:unit": "vitest run",
+		"test:integration": "playwright test --config playwright.config.ts"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
@@ -22,6 +25,8 @@
 		}
 	},
 	"devDependencies": {
-		"turbo": "^2"
+		"@playwright/test": "^1.50.1",
+		"turbo": "^2",
+		"vitest": "^3.1.1"
 	}
 }
