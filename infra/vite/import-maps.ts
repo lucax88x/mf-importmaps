@@ -68,6 +68,8 @@ type ImportMapConfig = {
 	/** Map placeholders to dev URLs (e.g., "${MF_COMPONENTS_URL}" -> "http://localhost:5251").
 	 *  Build output keeps placeholders (for nginx envsubst), dev/preview replaces them with local URLs. */
 	devBaseReplace?: Record<string, string>;
+	/** Base package names whose `require()` calls should be converted to ESM imports via esmExternalRequirePlugin. */
+	esmRequireExternals?: string[];
 };
 
 function getBasePackageName(specifier: string): string {
@@ -83,7 +85,12 @@ function escapeRegExp(str: string): string {
 }
 
 export const createImportMap = (config: ImportMapConfig) => {
-	const { imports, verbose = false, devBaseReplace } = config;
+	const {
+		imports,
+		verbose = false,
+		devBaseReplace,
+		esmRequireExternals,
+	} = config;
 
 	const baseNames = new Set(Object.keys(imports).map(getBasePackageName));
 
@@ -119,18 +126,36 @@ export const createImportMap = (config: ImportMapConfig) => {
 					return undefined;
 				}
 
+				const esmRequireSet = new Set(esmRequireExternals);
+				const esmRequirePatterns = esmRequireExternals?.map(
+					(name) => new RegExp(`^${escapeRegExp(name)}(\\/|$)`),
+				);
+
+				// Exclude esmRequireExternals from top-level external — they are
+				// handled by esmExternalRequirePlugin which also externalizes them.
+				const filteredExternalPatterns = esmRequireSet.size
+					? externalPatterns.filter(
+							(_, i) => !esmRequireSet.has([...baseNames][i]),
+						)
+					: externalPatterns;
+
+				console.log(filteredExternalPatterns);
+				console.log(esmRequireExternals);
+
 				return {
 					build: {
 						rolldownOptions: {
-							external: externalPatterns,
+							external: filteredExternalPatterns,
 							output: {
 								format: "es" as const,
 							},
-							// plugins: [
-							// 	esmExternalRequirePlugin({
-							// 		external: [/^react(-dom)?(\/.+)?$/],
-							// 	}),
-							// ],
+							...(esmRequirePatterns?.length && {
+								plugins: [
+									esmExternalRequirePlugin({
+										external: esmRequirePatterns,
+									}),
+								],
+							}),
 						},
 					},
 				};

@@ -27,6 +27,7 @@ const importMaps = createImportMap({
 			externals: ["react"],
 		}),
 	},
+	esmRequireExternals: ["react", "react-dom"],
 	devBaseReplace: {
 		"${MF_UI_URL}": "http://localhost:5252",
 		"${MF_COMPONENTS_URL}": "http://localhost:5251",

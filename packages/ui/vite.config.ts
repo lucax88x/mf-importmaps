@@ -16,6 +16,7 @@ const importMaps = createImportMap({
 		"react/jsx-dev-runtime": external("react/jsx-dev-runtime"),
 		"react-dom/client": external("react-dom/client", { externals: ["react"] }),
 	},
+	esmRequireExternals: ["react", "react-dom"],
 });
 
 const exportsPlugin = createExportsPlugin({
