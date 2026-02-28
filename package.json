@@ -12,7 +12,9 @@
 		"example:preview": "turbo preview",
 		"example:docker-up": "docker compose -f example/docker-compose.yml up --build",
 		"test:unit": "vitest run",
-		"test:integration": "playwright test --config playwright.config.ts"
+		"test:integration": "MODE=dev playwright test && MODE=preview playwright test",
+		"test:integration:dev": "MODE=dev playwright test",
+		"test:integration:preview": "MODE=preview playwright test"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
