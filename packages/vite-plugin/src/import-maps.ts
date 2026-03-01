@@ -1,66 +1,7 @@
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { esmExternalRequirePlugin, type Plugin } from "vite";
-import { parse as parseYaml } from "yaml";
-
-let _deps: Record<string, string> | null = null;
-
-function findWorkspaceRoot(from: string): string {
-	let dir = from;
-	while (true) {
-		if (existsSync(resolve(dir, "pnpm-workspace.yaml"))) {
-			return dir;
-		}
-		const parent = dirname(dir);
-		if (parent === dir) {
-			throw new Error("Could not find pnpm-workspace.yaml");
-		}
-		dir = parent;
-	}
-}
-
-function getDeps(): Record<string, string> {
-	if (_deps) {
-		return _deps;
-	}
-
-	const root = findWorkspaceRoot(process.cwd());
-	const wsPath = resolve(root, "pnpm-workspace.yaml");
-	const ws = parseYaml(readFileSync(wsPath, "utf-8"));
-
-	const deps: Record<string, string> = {};
-	if (ws.catalogs) {
-		for (const catalog of Object.values(ws.catalogs)) {
-			Object.assign(deps, catalog as Record<string, string>);
-		}
-	}
-
-	_deps = deps;
-	return deps;
-}
-
-export function external(
-	specifier: string,
-	options?: { externals?: string[] },
-): string {
-	const baseName = getBasePackageName(specifier);
-	const deps = getDeps();
-	const version = deps[baseName];
-	if (!version) {
-		throw new Error(
-			`Package "${baseName}" not found in pnpm-workspace.yaml catalogs`,
-		);
-	}
-
-	const subpath = specifier.slice(baseName.length);
-	let url = `https://esm.sh/${baseName}@${version}${subpath}`;
-
-	if (options?.externals?.length) {
-		url += `?external=${options.externals.join(",")}`;
-	}
-
-	return url;
-}
+import { escapeRegExp, getBasePackageName } from "./utils";
 
 export type ImportMapConfig = {
 	imports: Record<string, string>;
@@ -72,16 +13,49 @@ export type ImportMapConfig = {
 	esmRequireExternals?: string[];
 };
 
-function getBasePackageName(specifier: string): string {
-	if (specifier.startsWith("@")) {
-		const parts = specifier.split("/");
-		return parts.slice(0, 2).join("/");
+export function resolveDevImports(
+	imports: Record<string, string>,
+	devBaseReplace?: Record<string, string>,
+): Record<string, string> {
+	if (!devBaseReplace) {
+		return imports;
 	}
-	return specifier.split("/")[0];
+	return Object.fromEntries(
+		Object.entries(imports).map(([key, url]) => {
+			let resolved = url;
+			for (const [from, to] of Object.entries(devBaseReplace)) {
+				resolved = resolved.replace(from, to);
+			}
+			return [key, resolved];
+		}),
+	);
 }
 
-function escapeRegExp(str: string): string {
-	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+export function buildExternalPatterns(
+	baseNames: Set<string>,
+	esmRequireExternals?: string[],
+): RegExp[] {
+	const allPatterns = [...baseNames].map(
+		(name) => new RegExp(`^${escapeRegExp(name)}(\\/|$)`),
+	);
+
+	const esmRequireSet = new Set(esmRequireExternals);
+	if (!esmRequireSet.size) {
+		return allPatterns;
+	}
+
+	return allPatterns.filter((_, i) => !esmRequireSet.has([...baseNames][i]));
+}
+
+export function buildEsmRequirePatterns(
+	esmRequireExternals?: string[],
+): RegExp[] | undefined {
+	if (!esmRequireExternals?.length) {
+		return undefined;
+	}
+	return esmRequireExternals.map(
+		(name) => new RegExp(`^${escapeRegExp(name)}(\\/|$)`),
+	);
 }
 
 export const createImportMap = (config: ImportMapConfig) => {
@@ -93,24 +67,8 @@ export const createImportMap = (config: ImportMapConfig) => {
 	} = config;
 
 	const baseNames = new Set(Object.keys(imports).map(getBasePackageName));
-
-	const externalPatterns = [...baseNames].map(
-		(name) => new RegExp(`^${escapeRegExp(name)}(\\/|$)`),
-	);
-
 	const exclude = [...baseNames];
-
-	const devImports = devBaseReplace
-		? Object.fromEntries(
-				Object.entries(imports).map(([key, url]) => {
-					let resolved = url;
-					for (const [from, to] of Object.entries(devBaseReplace)) {
-						resolved = resolved.replace(from, to);
-					}
-					return [key, resolved];
-				}),
-			)
-		: imports;
+	const devImports = resolveDevImports(imports, devBaseReplace);
 
 	const plugin = (): Plugin => {
 		let isBuild = false;
@@ -126,20 +84,14 @@ export const createImportMap = (config: ImportMapConfig) => {
 					return undefined;
 				}
 
-				const esmRequireSet = new Set(esmRequireExternals);
-				const esmRequirePatterns = esmRequireExternals?.map(
-					(name) => new RegExp(`^${escapeRegExp(name)}(\\/|$)`),
+				const filteredExternalPatterns = buildExternalPatterns(
+					baseNames,
+					esmRequireExternals,
 				);
+				const esmRequirePatterns =
+					buildEsmRequirePatterns(esmRequireExternals);
 
-				// Exclude esmRequireExternals from top-level external — they are
-				// handled by esmExternalRequirePlugin which also externalizes them.
-				const filteredExternalPatterns = esmRequireSet.size
-					? externalPatterns.filter(
-							(_, i) => !esmRequireSet.has([...baseNames][i]),
-						)
-					: externalPatterns;
-
-					return {
+				return {
 					build: {
 						rolldownOptions: {
 							external: filteredExternalPatterns,
