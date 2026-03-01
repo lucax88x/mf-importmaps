@@ -1,14 +1,9 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import {
-	build,
-	createExportsPlugin,
-	createImportMap,
-	external,
-} from "vite-plugin-import-maps";
+import { build, external, importMaps } from "vite-plugin-mf-import-maps";
 
-const importMaps = createImportMap({
+const importMapsPlugin = importMaps.importMap({
 	imports: {
 		react: external("react"),
 		"react-dom": external("react-dom", { externals: ["react"] }),
@@ -19,7 +14,7 @@ const importMaps = createImportMap({
 	esmRequireExternals: ["react", "react-dom"],
 });
 
-const exportsPlugin = createExportsPlugin({
+const exportsPlugin = importMaps.exports({
 	index: "src/exports/index.ts",
 	YellowButton: "src/exports/YellowButton.tsx",
 	MuiSelect: "src/exports/MuiSelect.tsx",
@@ -27,7 +22,7 @@ const exportsPlugin = createExportsPlugin({
 });
 
 export default defineConfig({
-	plugins: [tailwindcss(), react(), importMaps.plugin(), exportsPlugin],
+	plugins: [tailwindcss(), react(), importMapsPlugin.plugin(), exportsPlugin],
 	server: {
 		port: 5252,
 		strictPort: true,
@@ -38,6 +33,6 @@ export default defineConfig({
 		strictPort: true,
 		host: true,
 	},
-	optimizeDeps: { ...importMaps.optimizeDeps },
+	optimizeDeps: { ...importMapsPlugin.optimizeDeps },
 	build: build,
 });

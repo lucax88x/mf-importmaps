@@ -3,7 +3,7 @@ import {
 	buildEsmRequirePatterns,
 	buildExternalPatterns,
 	createExportsPlugin,
-	createImportMap,
+	createImportMapPlugin,
 	resolveDevImports,
 } from "../../packages/vite-plugin/src/import-maps";
 
@@ -93,7 +93,7 @@ describe("createImportMap", () => {
 	};
 
 	it("returns plugin factory and optimizeDeps", () => {
-		const result = createImportMap(baseConfig);
+		const result = createImportMapPlugin(baseConfig);
 		expect(result).toHaveProperty("plugin");
 		expect(result).toHaveProperty("optimizeDeps");
 		expect(typeof result.plugin).toBe("function");
@@ -101,14 +101,14 @@ describe("createImportMap", () => {
 	});
 
 	it("plugin has correct name and enforce", () => {
-		const plugin = createImportMap(baseConfig).plugin();
+		const plugin = createImportMapPlugin(baseConfig).plugin();
 		expect(plugin.name).toBe("import-map");
 		expect(plugin.enforce).toBe("pre");
 	});
 
 	describe("resolveId", () => {
 		it("resolves imports in dev mode", () => {
-			const plugin = createImportMap(baseConfig).plugin();
+			const plugin = createImportMapPlugin(baseConfig).plugin();
 			// Trigger dev mode
 			(plugin.config as Function)({}, { command: "serve" });
 
@@ -120,7 +120,7 @@ describe("createImportMap", () => {
 		});
 
 		it("returns undefined for unknown specifiers in dev", () => {
-			const plugin = createImportMap(baseConfig).plugin();
+			const plugin = createImportMapPlugin(baseConfig).plugin();
 			(plugin.config as Function)({}, { command: "serve" });
 
 			const result = (plugin.resolveId as Function)("vue");
@@ -128,7 +128,7 @@ describe("createImportMap", () => {
 		});
 
 		it("returns undefined in build mode", () => {
-			const plugin = createImportMap(baseConfig).plugin();
+			const plugin = createImportMapPlugin(baseConfig).plugin();
 			(plugin.config as Function)({}, { command: "build" });
 
 			const result = (plugin.resolveId as Function)("react");
@@ -138,7 +138,7 @@ describe("createImportMap", () => {
 
 	describe("transformIndexHtml", () => {
 		it("injects import map with raw placeholders in build", () => {
-			const plugin = createImportMap(baseConfig).plugin();
+			const plugin = createImportMapPlugin(baseConfig).plugin();
 			(plugin.config as Function)({}, { command: "build" });
 
 			const transform = plugin.transformIndexHtml as {
@@ -163,7 +163,7 @@ describe("createImportMap", () => {
 				imports: { "my-mf": "${URL}/app.js" },
 				devBaseReplace: { "${URL}": "http://localhost:5173" },
 			};
-			const plugin = createImportMap(config).plugin();
+			const plugin = createImportMapPlugin(config).plugin();
 			(plugin.config as Function)({}, { command: "serve" });
 
 			const transform = plugin.transformIndexHtml as {
@@ -178,11 +178,8 @@ describe("createImportMap", () => {
 
 	describe("build config", () => {
 		it("returns external patterns in build mode", () => {
-			const plugin = createImportMap(baseConfig).plugin();
-			const buildConfig = (plugin.config as Function)(
-				{},
-				{ command: "build" },
-			);
+			const plugin = createImportMapPlugin(baseConfig).plugin();
+			const buildConfig = (plugin.config as Function)({}, { command: "build" });
 
 			expect(buildConfig.build.rolldownOptions.external).toHaveLength(2);
 			expect(buildConfig.build.rolldownOptions.external[0].test("react")).toBe(
@@ -195,11 +192,8 @@ describe("createImportMap", () => {
 				...baseConfig,
 				esmRequireExternals: ["react-dom"],
 			};
-			const plugin = createImportMap(config).plugin();
-			const buildConfig = (plugin.config as Function)(
-				{},
-				{ command: "build" },
-			);
+			const plugin = createImportMapPlugin(config).plugin();
+			const buildConfig = (plugin.config as Function)({}, { command: "build" });
 
 			// react-dom should be filtered from top-level external
 			expect(buildConfig.build.rolldownOptions.external).toHaveLength(1);
@@ -215,7 +209,7 @@ describe("createImportMap", () => {
 		});
 
 		it("returns undefined in dev mode", () => {
-			const plugin = createImportMap(baseConfig).plugin();
+			const plugin = createImportMapPlugin(baseConfig).plugin();
 			const result = (plugin.config as Function)({}, { command: "serve" });
 			expect(result).toBeUndefined();
 		});

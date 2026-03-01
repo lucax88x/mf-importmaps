@@ -5,35 +5,89 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
+      - uses: jdx/mise-action@v2
         with:
-          node-version: 24
-          cache: pnpm
+          install_args: node pnpm
 
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-${{ runner.os }}-
+
+      # Create placeholder tarballs so pnpm can resolve the workspace graph.
+      # file: references in package.json must exist before any pnpm install,
+      # even with --filter. Real tarballs are created by publish:local later.
+      - name: Create placeholder tarballs
+        run: |
+          mkdir -p example/.local-packages
+          for pkg in example/packages/ui example/packages/components; do
+            name=$(node -p "require('./$pkg/package.json').name")
+            version=$(node -p "require('./$pkg/package.json').version")
+            tarball=$(echo "$name" | sed 's/@//;s/\//-/')-$version.tgz
+            mkdir -p /tmp/package
+            echo "{\"name\":\"$name\",\"version\":\"$version\"}" > /tmp/package/package.json
+            tar czf "example/.local-packages/$tarball" -C /tmp package
+            rm -rf /tmp/package
+          done
+
+      # Stage 1: install plugin
+      - name: Install and build plugin
+        run: |
+          pnpm --filter vite-plugin-import-maps install
+          pnpm --filter vite-plugin-import-maps build
+
+      # Stage 2: Bootstrap @mf/ui (no file: deps)
+      - name: Install and build @mf/ui
+        run: |
+          # Using --no-frozen-lockfile because local tarballs were freshly packed
+          pnpm --filter @mf/ui install --no-frozen-lockfile
+          pnpm --filter @mf/ui build
+          pnpm --filter @mf/ui publish:local
+
+      # Stage 3: Bootstrap @mf/components (depends on ui tarball)
+      - name: Install and build @mf/components
+        run: |
+          # Using --no-frozen-lockfile because local tarballs were freshly packed
+          pnpm --filter @mf/components install --no-frozen-lockfile
+          pnpm --filter @mf/components build
+          pnpm --filter @mf/components publish:local
+
+      # Stage 4: Bootstrap @mf/shell (depends on ui and components tarball)
+      - name: Install and build @mf/shell
+        run: |
+          # Using --no-frozen-lockfile because local tarballs were freshly packed
+          pnpm --filter @mf/shell install --no-frozen-lockfile
+          pnpm --filter @mf/shell build
+
+      # Stage 4: Full install now that all tarballs exist
+      # Using --no-frozen-lockfile because local tarballs were freshly packed
+      # and their checksums won't match what's in the lockfile
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm test:unit
 
       - run: pnpm example:build
-      - run: pnpm example:publish-local
 
-      - run: npx playwright install --with-deps chromium
+      - run: pnpm test:integration:install
 
       - name: Integration tests (dev)
-        run: MODE=dev npx playwright test
+        run: pnpm test:integration:dev
 
       - name: Integration tests (preview)
-        run: MODE=preview npx playwright test
+        run: pnpm test:integration:preview
 
   publish:
-    needs: test
+    needs: ci
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -41,18 +95,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
+      - uses: jdx/mise-action@v2
         with:
-          node-version: 24
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
+          install_args: node pnpm
+
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-${{ runner.os }}-
+
+      - run: |
+          npm config set registry https://registry.npmjs.org
+          npm config set //registry.npmjs.org/:_authToken $NODE_AUTH_TOKEN
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm --filter vite-plugin-import-maps build
 
       - run: pnpm --filter vite-plugin-import-maps publish --no-git-checks --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

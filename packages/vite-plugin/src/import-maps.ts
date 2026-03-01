@@ -58,7 +58,7 @@ export function buildEsmRequirePatterns(
 	);
 }
 
-export const createImportMap = (config: ImportMapConfig) => {
+export const createImportMapPlugin = (config: ImportMapConfig) => {
 	const {
 		imports,
 		verbose = false,
@@ -88,8 +88,7 @@ export const createImportMap = (config: ImportMapConfig) => {
 					baseNames,
 					esmRequireExternals,
 				);
-				const esmRequirePatterns =
-					buildEsmRequirePatterns(esmRequireExternals);
+				const esmRequirePatterns = buildEsmRequirePatterns(esmRequireExternals);
 
 				return {
 					build: {
@@ -238,4 +237,9 @@ export const createExportsPlugin = (
 			});
 		},
 	};
+};
+
+export const importMaps = {
+	importMap: createImportMapPlugin,
+	exports: createExportsPlugin,
 };

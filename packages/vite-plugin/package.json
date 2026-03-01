@@ -1,5 +1,5 @@
 {
-	"name": "vite-plugin-import-maps",
+	"name": "vite-plugin-mf-import-maps",
 	"version": "0.0.0",
 	"type": "module",
 	"exports": {
@@ -10,7 +10,9 @@
 	},
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsup"
 	},

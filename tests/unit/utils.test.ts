@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { escapeRegExp, getBasePackageName } from "../../packages/vite-plugin/src/utils";
+import {
+	escapeRegExp,
+	getBasePackageName,
+} from "../../packages/vite-plugin/src/utils";
 
 describe("getBasePackageName", () => {
 	it("returns unscoped package name", () => {

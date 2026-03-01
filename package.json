@@ -12,6 +12,7 @@
 		"example:docker-up": "docker compose -f example/docker-compose.yml up --build",
 		"gh:ci": "act -W .github/workflows/ci.yml",
 		"test:unit": "vitest run",
+		"test:integration:install": "pnpm dlx playwright install --with-deps chromium",
 		"test:integration": "MODE=dev playwright test && MODE=preview playwright test",
 		"test:integration:dev": "MODE=dev playwright test",
 		"test:integration:preview": "MODE=preview playwright test"

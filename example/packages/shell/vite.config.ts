@@ -1,13 +1,9 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import {
-	build,
-	createImportMap,
-	external,
-} from "vite-plugin-import-maps";
+import { build, external, importMaps } from "vite-plugin-mf-import-maps";
 
-const importMaps = createImportMap({
+const importMapsPlugin = importMaps.importMap({
 	imports: {
 		"@mf/ui": "${MF_UI_URL}/index.js",
 		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
@@ -38,7 +34,7 @@ const importMaps = createImportMap({
 });
 
 export default defineConfig({
-	plugins: [tailwindcss(), react(), importMaps.plugin()],
+	plugins: [tailwindcss(), react(), importMapsPlugin.plugin()],
 	server: {
 		port: 5250,
 		strictPort: true,
@@ -49,6 +45,6 @@ export default defineConfig({
 		strictPort: true,
 		host: true,
 	},
-	optimizeDeps: { ...importMaps.optimizeDeps },
+	optimizeDeps: { ...importMapsPlugin.optimizeDeps },
 	build: build,
 });

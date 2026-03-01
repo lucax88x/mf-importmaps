@@ -72,7 +72,7 @@ importers:
       vite:
         specifier: 8.0.0-beta.15
         version: 8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2)
-      vite-plugin-import-maps:
+      vite-plugin-mf-import-maps:
         specifier: workspace:*
         version: link:../../../packages/vite-plugin
 
@@ -115,7 +115,7 @@ importers:
       vite:
         specifier: 8.0.0-beta.15
         version: 8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2)
-      vite-plugin-import-maps:
+      vite-plugin-mf-import-maps:
         specifier: workspace:*
         version: link:../../../packages/vite-plugin
 
@@ -161,7 +161,7 @@ importers:
       vite:
         specifier: 8.0.0-beta.15
         version: 8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2)
-      vite-plugin-import-maps:
+      vite-plugin-mf-import-maps:
         specifier: workspace:*
         version: link:../../../packages/vite-plugin
 
