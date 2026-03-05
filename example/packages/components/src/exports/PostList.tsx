@@ -1,5 +1,5 @@
+import { YellowButton } from "@mf/ui";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "./Button";
 
 import "../app.css";
 
@@ -30,8 +30,8 @@ export function PostList() {
 					</li>
 				))}
 			</ul>
-			<Button
-				label="Click me"
+			<YellowButton
+				label="Yellow button from @mf/ui"
 				onClick={() => alert("Button in PostList clicked!")}
 			/>
 		</div>

@@ -7,7 +7,7 @@ vi.mock("node:fs", () => ({
 
 import { existsSync, readFileSync } from "node:fs";
 import {
-	external,
+	cdnUrl,
 	findWorkspaceRoot,
 	getDeps,
 	resetDepsCache,
@@ -88,7 +88,7 @@ catalogs:
 	});
 });
 
-describe("external", () => {
+describe("cdnUrl", () => {
 	function setupWorkspace(deps: Record<string, string>) {
 		const catalogEntries = Object.entries(deps)
 			.map(([k, v]) => `    "${k}": "${v}"`)
@@ -102,33 +102,31 @@ describe("external", () => {
 
 	it("generates CDN URL for unscoped package", () => {
 		setupWorkspace({ react: "^18.2.0" });
-		expect(external("react")).toBe("https://esm.sh/react@^18.2.0");
+		expect(cdnUrl("react")).toBe("https://esm.sh/react@^18.2.0");
 	});
 
 	it("generates CDN URL for scoped package", () => {
 		setupWorkspace({ "@mui/material": "^5.0.0" });
-		expect(external("@mui/material")).toBe(
-			"https://esm.sh/@mui/material@^5.0.0",
-		);
+		expect(cdnUrl("@mui/material")).toBe("https://esm.sh/@mui/material@^5.0.0");
 	});
 
 	it("includes subpath in URL", () => {
 		setupWorkspace({ "@mui/material": "^5.0.0" });
-		expect(external("@mui/material/Button")).toBe(
+		expect(cdnUrl("@mui/material/Button")).toBe(
 			"https://esm.sh/@mui/material@^5.0.0/Button",
 		);
 	});
 
 	it("appends externals as query parameter", () => {
 		setupWorkspace({ react: "^18.2.0" });
-		expect(external("react", { externals: ["react-dom", "scheduler"] })).toBe(
+		expect(cdnUrl("react", { externals: ["react-dom", "scheduler"] })).toBe(
 			"https://esm.sh/react@^18.2.0?external=react-dom,scheduler",
 		);
 	});
 
 	it("throws for unknown package", () => {
 		setupWorkspace({ react: "^18.2.0" });
-		expect(() => external("vue")).toThrow(
+		expect(() => cdnUrl("vue")).toThrow(
 			'Package "vue" not found in pnpm-workspace.yaml catalogs',
 		);
 	});

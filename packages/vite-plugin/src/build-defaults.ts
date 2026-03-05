@@ -1,6 +1,6 @@
 import type { BuildOptions } from "vite";
 
-export const build: BuildOptions = {
+export const buildDefaults: BuildOptions = {
 	target: "esnext",
 	minify: "oxc",
 	modulePreload: false,

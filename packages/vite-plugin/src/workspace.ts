@@ -43,7 +43,7 @@ export function resetDepsCache(): void {
 	_deps = null;
 }
 
-export function external(
+export function cdnUrl(
 	specifier: string,
 	options?: { externals?: string[] },
 ): string {

@@ -1,20 +1,20 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { build, external, importMaps } from "vite-plugin-mf-import-maps";
+import { cdnUrl, mf } from "vite-plugin-mf-import-maps";
 
-const importMapsPlugin = importMaps.importMap({
+const importMap = mf.importMap({
 	imports: {
-		react: external("react"),
-		"react-dom": external("react-dom", { externals: ["react"] }),
-		"react/jsx-runtime": external("react/jsx-runtime"),
-		"react/jsx-dev-runtime": external("react/jsx-dev-runtime"),
-		"react-dom/client": external("react-dom/client", { externals: ["react"] }),
+		react: cdnUrl("react"),
+		"react-dom": cdnUrl("react-dom", { externals: ["react"] }),
+		"react/jsx-runtime": cdnUrl("react/jsx-runtime"),
+		"react/jsx-dev-runtime": cdnUrl("react/jsx-dev-runtime"),
+		"react-dom/client": cdnUrl("react-dom/client", { externals: ["react"] }),
 	},
 	esmRequireExternals: ["react", "react-dom"],
 });
 
-const exportsPlugin = importMaps.exports({
+const libraryEntries = mf.libraryEntries({
 	index: "src/exports/index.ts",
 	YellowButton: "src/exports/YellowButton.tsx",
 	MuiSelect: "src/exports/MuiSelect.tsx",
@@ -22,7 +22,7 @@ const exportsPlugin = importMaps.exports({
 });
 
 export default defineConfig({
-	plugins: [tailwindcss(), react(), importMapsPlugin.plugin(), exportsPlugin],
+	plugins: [tailwindcss(), react(), importMap.plugin(), libraryEntries],
 	server: {
 		port: 5252,
 		strictPort: true,
@@ -33,6 +33,6 @@ export default defineConfig({
 		strictPort: true,
 		host: true,
 	},
-	optimizeDeps: { ...importMapsPlugin.optimizeDeps },
-	build: build,
+	optimizeDeps: { ...importMap.optimizeDeps },
+	build: mf.buildDefaults,
 });

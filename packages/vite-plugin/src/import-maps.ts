@@ -238,8 +238,3 @@ export const createExportsPlugin = (
 		},
 	};
 };
-
-export const importMaps = {
-	importMap: createImportMapPlugin,
-	exports: createExportsPlugin,
-};
