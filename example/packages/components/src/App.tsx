@@ -1,10 +1,10 @@
-// All imports from @mf/components — loading the module also registers <mf-button>
+// All imports from @mf/example-components — loading the module also registers <mf-button>
 
 import { useState } from "react";
 import { Button } from "./exports/Button";
 import { PostList } from "./exports/PostList";
 import { calculate } from "./exports/calculate";
-import { YellowButton } from "@mf/ui";
+import { YellowButton } from "@mf/example-ui";
 import "./exports/MfButton";
 
 export default function App() {
@@ -58,11 +58,11 @@ export default function App() {
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>
-				<h2>4. YellowButton from @mf/ui</h2>
+				<h2>4. YellowButton from @mf/example-ui</h2>
 				<p>
-					Imported from <code>@mf/ui</code> (multi-level dependency):
+					Imported from <code>@mf/example-ui</code> (multi-level dependency):
 				</p>
-				<YellowButton label="I come from @mf/ui!" />
+				<YellowButton label="I come from @mf/example-ui!" />
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>

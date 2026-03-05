@@ -10,7 +10,7 @@ COPY example/packages/shell/package.json example/packages/shell/
 COPY . .
 
 RUN pnpm install --frozen-lockfile
-RUN pnpm turbo build --filter=@mf/shell
+RUN pnpm turbo build --filter=@mf/example-shell
 
 FROM nginx:alpine
 COPY example/packages/shell/nginx.conf /etc/nginx/conf.d/default.conf

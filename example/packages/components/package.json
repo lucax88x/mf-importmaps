@@ -1,5 +1,5 @@
 {
-	"name": "@mf/components",
+	"name": "@mf/example-components",
 	"private": true,
 	"version": "0.0.5",
 	"type": "module",
@@ -26,13 +26,13 @@
 		"tailwindcss": "^4.2.1"
 	},
 	"devDependencies": {
-		"@mf/ui": "file:../../.local-packages/mf-ui-0.0.4.tgz",
+		"@mf/example-ui": "file:../../.local-packages/mf-example-ui-0.0.4.tgz",
 		"@types/react": "catalog:react",
 		"@types/react-dom": "catalog:react",
 		"@typescript/native-preview": "^7.0.0-dev",
 		"@vitejs/plugin-react": "^5",
 		"vite": "8.0.0-beta.15",
-		"vite-plugin-mf-import-maps": "workspace:*"
+		"@mf/vite-plugin": "workspace:*"
 	},
 	"peerDependencies": {
 		"react": "catalog:react",

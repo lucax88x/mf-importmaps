@@ -1,8 +1,8 @@
-import { createLazyComponent } from "./createLazyComponent";
+import { createLazyComponent } from "@mf/runtime";
 
 export const LazySlowButton = createLazyComponent(
 	() =>
-		import("@mf/components/SlowButton").then((m) => ({
+		import("@mf/example-components/SlowButton").then((m) => ({
 			default: m.SlowButton,
 		})),
 	{ loading: "takes some time to load" },

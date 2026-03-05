@@ -9,7 +9,7 @@ COPY example/packages/components/package.json example/packages/components/
 COPY . .
 
 RUN pnpm install --frozen-lockfile
-RUN pnpm turbo build --filter=@mf/components
+RUN pnpm turbo build --filter=@mf/example-components
 
 FROM nginx:alpine
 COPY example/packages/components/nginx.conf /etc/nginx/conf.d/default.conf

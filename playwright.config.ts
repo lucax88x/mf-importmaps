@@ -6,34 +6,34 @@ const servers =
 	mode === "preview"
 		? [
 				{
-					command: "pnpm turbo preview --filter=@mf/ui",
+					command: "pnpm turbo preview --filter=@mf/example-ui",
 					port: 5252,
 					reuseExistingServer: true,
 				},
 				{
-					command: "pnpm turbo preview --filter=@mf/components",
+					command: "pnpm turbo preview --filter=@mf/example-components",
 					port: 5251,
 					reuseExistingServer: true,
 				},
 				{
-					command: "pnpm turbo preview --filter=@mf/shell",
+					command: "pnpm turbo preview --filter=@mf/example-shell",
 					port: 5250,
 					reuseExistingServer: true,
 				},
 			]
 		: [
 				{
-					command: "pnpm turbo dev --filter=@mf/ui",
+					command: "pnpm turbo dev --filter=@mf/example-ui",
 					port: 5252,
 					reuseExistingServer: true,
 				},
 				{
-					command: "pnpm turbo dev --filter=@mf/components",
+					command: "pnpm turbo dev --filter=@mf/example-components",
 					port: 5251,
 					reuseExistingServer: true,
 				},
 				{
-					command: "pnpm turbo dev --filter=@mf/shell",
+					command: "pnpm turbo dev --filter=@mf/example-shell",
 					port: 5250,
 					reuseExistingServer: true,
 				},

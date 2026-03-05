@@ -1,21 +1,21 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { cdnUrl, mf } from "vite-plugin-mf-import-maps";
+import { cdnUrl, mf } from "@mf/vite-plugin";
 
 const importMap = mf.importMap({
 	imports: {
-		"@mf/ui": "${MF_UI_URL}/index.js",
-		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
-		"@mf/ui/MuiSelect": "${MF_UI_URL}/MuiSelect.js",
-		"@mf/ui/BaseSelect": "${MF_UI_URL}/BaseSelect.js",
+		"@mf/example-ui": "${MF_UI_URL}/index.js",
+		"@mf/example-ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
+		"@mf/example-ui/MuiSelect": "${MF_UI_URL}/MuiSelect.js",
+		"@mf/example-ui/BaseSelect": "${MF_UI_URL}/BaseSelect.js",
 
-		"@mf/components": "${MF_COMPONENTS_URL}/index.js",
-		"@mf/components/button": "${MF_COMPONENTS_URL}/button.js",
-		"@mf/components/mf-button": "${MF_COMPONENTS_URL}/mf-button.js",
-		"@mf/components/calculate": "${MF_COMPONENTS_URL}/calculate.js",
-		"@mf/components/PostList": "${MF_COMPONENTS_URL}/PostList.js",
-		"@mf/components/SlowButton": "${MF_COMPONENTS_URL}/SlowButton.js",
+		"@mf/example-components": "${MF_COMPONENTS_URL}/index.js",
+		"@mf/example-components/button": "${MF_COMPONENTS_URL}/button.js",
+		"@mf/example-components/mf-button": "${MF_COMPONENTS_URL}/mf-button.js",
+		"@mf/example-components/calculate": "${MF_COMPONENTS_URL}/calculate.js",
+		"@mf/example-components/PostList": "${MF_COMPONENTS_URL}/PostList.js",
+		"@mf/example-components/SlowButton": "${MF_COMPONENTS_URL}/SlowButton.js",
 
 		react: cdnUrl("react"),
 		"react-dom": cdnUrl("react-dom", { externals: ["react"] }),

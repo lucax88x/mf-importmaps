@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const UI_URL = "http://localhost:5252";
 
-test.describe("@mf/ui", () => {
+test.describe("@mf/example-ui", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto(UI_URL);
 	});

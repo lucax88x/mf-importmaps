@@ -46,28 +46,28 @@ jobs:
           pnpm --filter vite-plugin-import-maps install
           pnpm --filter vite-plugin-import-maps build
 
-      # Stage 2: Bootstrap @mf/ui (no file: deps)
-      - name: Install and build @mf/ui
+      # Stage 2: Bootstrap @mf/example-ui (no file: deps)
+      - name: Install and build @mf/example-ui
         run: |
           # Using --no-frozen-lockfile because local tarballs were freshly packed
-          pnpm --filter @mf/ui install --no-frozen-lockfile
-          pnpm --filter @mf/ui build
-          pnpm --filter @mf/ui publish:local
+          pnpm --filter @mf/example-ui install --no-frozen-lockfile
+          pnpm --filter @mf/example-ui build
+          pnpm --filter @mf/example-ui publish:local
 
-      # Stage 3: Bootstrap @mf/components (depends on ui tarball)
-      - name: Install and build @mf/components
+      # Stage 3: Bootstrap @mf/example-components (depends on ui tarball)
+      - name: Install and build @mf/example-components
         run: |
           # Using --no-frozen-lockfile because local tarballs were freshly packed
-          pnpm --filter @mf/components install --no-frozen-lockfile
-          pnpm --filter @mf/components build
-          pnpm --filter @mf/components publish:local
+          pnpm --filter @mf/example-components install --no-frozen-lockfile
+          pnpm --filter @mf/example-components build
+          pnpm --filter @mf/example-components publish:local
 
-      # Stage 4: Bootstrap @mf/shell (depends on ui and components tarball)
-      - name: Install and build @mf/shell
+      # Stage 4: Bootstrap @mf/example-shell (depends on ui and components tarball)
+      - name: Install and build @mf/example-shell
         run: |
           # Using --no-frozen-lockfile because local tarballs were freshly packed
-          pnpm --filter @mf/shell install --no-frozen-lockfile
-          pnpm --filter @mf/shell build
+          pnpm --filter @mf/example-shell install --no-frozen-lockfile
+          pnpm --filter @mf/example-shell build
 
       # Stage 4: Full install now that all tarballs exist
       # Using --no-frozen-lockfile because local tarballs were freshly packed

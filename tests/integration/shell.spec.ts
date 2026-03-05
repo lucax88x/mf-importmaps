@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const SHELL_URL = "http://localhost:5250";
 
-test.describe("@mf/shell", () => {
+test.describe("@mf/example-shell", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto(SHELL_URL);
 	});
@@ -18,11 +18,11 @@ test.describe("@mf/shell", () => {
 		const content = await importMap.textContent();
 		const parsed = JSON.parse(content!);
 		expect(parsed.imports).toHaveProperty("react");
-		expect(parsed.imports).toHaveProperty("@mf/components");
-		expect(parsed.imports).toHaveProperty("@mf/ui");
+		expect(parsed.imports).toHaveProperty("@mf/example-components");
+		expect(parsed.imports).toHaveProperty("@mf/example-ui");
 	});
 
-	test("React component from @mf/components renders and is interactive", async ({
+	test("React component from @mf/example-components renders and is interactive", async ({
 		page,
 	}) => {
 		const button = page.getByRole("button", { name: "Clicked 0 times" });
@@ -45,7 +45,7 @@ test.describe("@mf/shell", () => {
 		await expect(page.getByText("Result: 42")).toBeVisible();
 	});
 
-	test("PostList from @mf/components loads posts via React Query", async ({
+	test("PostList from @mf/example-components loads posts via React Query", async ({
 		page,
 	}) => {
 		const section = page.locator("section", {
@@ -69,18 +69,18 @@ test.describe("@mf/shell", () => {
 		});
 	});
 
-	test("YellowButton from @mf/ui renders", async ({ page }) => {
+	test("YellowButton from @mf/example-ui renders", async ({ page }) => {
 		await expect(
-			page.getByRole("button", { name: "Direct from @mf/ui in shell!" }),
+			page.getByRole("button", { name: "Direct from @mf/example-ui in shell!" }),
 		).toBeVisible();
 	});
 
-	test("MUI Select from @mf/ui renders", async ({ page }) => {
+	test("MUI Select from @mf/example-ui renders", async ({ page }) => {
 		const section = page.locator("section", { hasText: "MUI Select" });
 		await expect(section.getByRole("combobox")).toBeVisible();
 	});
 
-	test("Base Select from @mf/ui renders", async ({ page }) => {
+	test("Base Select from @mf/example-ui renders", async ({ page }) => {
 		const section = page.locator("section", { hasText: "Base Select" });
 		await expect(section.getByText("Select apple")).toBeVisible();
 	});

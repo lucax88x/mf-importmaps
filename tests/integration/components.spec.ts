@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const COMPONENTS_URL = "http://localhost:5251";
 
-test.describe("@mf/components", () => {
+test.describe("@mf/example-components", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto(COMPONENTS_URL);
 	});
@@ -18,7 +18,7 @@ test.describe("@mf/components", () => {
 		const content = await importMap.textContent();
 		const parsed = JSON.parse(content!);
 		expect(parsed.imports).toHaveProperty("react");
-		expect(parsed.imports).toHaveProperty("@mf/ui");
+		expect(parsed.imports).toHaveProperty("@mf/example-ui");
 	});
 
 	test("Button React component renders and is interactive", async ({
@@ -44,11 +44,11 @@ test.describe("@mf/components", () => {
 		await expect(page.getByText("Result: 42")).toBeVisible();
 	});
 
-	test("YellowButton from @mf/ui renders (cross-microfrontend dependency)", async ({
+	test("YellowButton from @mf/example-ui renders (cross-microfrontend dependency)", async ({
 		page,
 	}) => {
 		await expect(
-			page.getByRole("button", { name: "I come from @mf/ui!" }),
+			page.getByRole("button", { name: "I come from @mf/example-ui!" }),
 		).toBeVisible();
 	});
 

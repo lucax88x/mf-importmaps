@@ -1,9 +1,9 @@
-import { Button, MfButton } from "@mf/components";
-import { BaseSelect } from "@mf/ui/BaseSelect";
-import { calculate } from "@mf/components/calculate";
-import { MuiSelect } from "@mf/ui/MuiSelect";
-import { PostList } from "@mf/components/PostList";
-import { YellowButton } from "@mf/ui";
+import { Button, MfButton } from "@mf/example-components";
+import { BaseSelect } from "@mf/example-ui/BaseSelect";
+import { calculate } from "@mf/example-components/calculate";
+import { MuiSelect } from "@mf/example-ui/MuiSelect";
+import { PostList } from "@mf/example-components/PostList";
+import { YellowButton } from "@mf/example-ui";
 import { useState } from "react";
 import { LazySlowButton } from "./LazySlowButton";
 import { ShellUserList } from "./ShellUserList";
@@ -33,7 +33,7 @@ export default function App() {
 		>
 			<h1>Microfrontend Shell</h1>
 			<p>
-				All imports below come from <code>@mf/components</code> via import maps
+				All imports below come from <code>@mf/example-components</code> via import maps
 				(in production build).
 			</p>
 
@@ -75,7 +75,7 @@ export default function App() {
 			<section style={{ marginBottom: "2rem" }}>
 				<h2>4. React Query — Remote Component</h2>
 				<p>
-					<code>PostList</code> from <code>@mf/components</code> uses{" "}
+					<code>PostList</code> from <code>@mf/example-components</code> uses{" "}
 					<code>useQuery</code> internally:
 				</p>
 				<PostList />
@@ -91,11 +91,11 @@ export default function App() {
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>
-				<h2>6. YellowButton from @mf/ui (direct)</h2>
+				<h2>6. YellowButton from @mf/example-ui (direct)</h2>
 				<p>
-					Imported directly from <code>@mf/ui</code> in the shell:
+					Imported directly from <code>@mf/example-ui</code> in the shell:
 				</p>
-				<YellowButton label="Direct from @mf/ui in shell!" />
+				<YellowButton label="Direct from @mf/example-ui in shell!" />
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>

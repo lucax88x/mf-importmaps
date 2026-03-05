@@ -1,12 +1,12 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { cdnUrl, mf } from "vite-plugin-mf-import-maps";
+import { cdnUrl, mf } from "@mf/vite-plugin";
 
 const importMap = mf.importMap({
 	imports: {
-		"@mf/ui": "${MF_UI_URL}/index.js",
-		"@mf/ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
+		"@mf/example-ui": "${MF_UI_URL}/index.js",
+		"@mf/example-ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
 
 		react: cdnUrl("react"),
 		"react-dom": cdnUrl("react-dom", { externals: ["react"] }),

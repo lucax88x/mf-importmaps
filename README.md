@@ -37,9 +37,9 @@ Orchestrated with **pnpm workspaces** + **Turborepo**.
 mf-importmaps/
 ├── infra/vite/              # @mf/infra-vite — shared Vite plugins
 ├── packages/
-│   ├── components/          # @mf/components — shared component library
-│   ├── shell/               # @mf/shell — host application
-│   └── ui/                  # @mf/ui — UI primitives (MUI, Base UI)
+│   ├── components/          # @mf/example-components — shared component library
+│   ├── shell/               # @mf/example-shell — host application
+│   └── ui/                  # @mf/example-ui — UI primitives (MUI, Base UI)
 ├── proxy/                   # nginx reverse proxy config for Docker
 ├── docker-compose.yml
 ├── pnpm-workspace.yaml      # workspace definition + version catalogs
@@ -50,15 +50,15 @@ mf-importmaps/
 
 | Package | Path | Port | Description |
 |---|---|---|---|
-| `@mf/shell` | `packages/shell/` | 5250 | Host app that consumes components and UI via import maps |
-| `@mf/components` | `packages/components/` | 5251 | Shared library: React components, Web Components, utilities |
-| `@mf/ui` | `packages/ui/` | 5252 | UI primitives built on MUI v7 and Base UI |
+| `@mf/example-shell` | `packages/shell/` | 5250 | Host app that consumes components and UI via import maps |
+| `@mf/example-components` | `packages/components/` | 5251 | Shared library: React components, Web Components, utilities |
+| `@mf/example-ui` | `packages/ui/` | 5252 | UI primitives built on MUI v7 and Base UI |
 | `@mf/infra-vite` | `infra/vite/` | — | Shared Vite plugins for import maps and multi-entry builds |
 
 ### Build Order (Turborepo)
 
 ```
-@mf/ui → @mf/components → @mf/shell
+@mf/example-ui → @mf/example-components → @mf/example-shell
 ```
 
 Each library depends on the previous one's build output for type declarations.
@@ -73,11 +73,11 @@ The core problem: if each microfrontend bundles its own React, the browser loads
 Browser loads shell (localhost:5250)
   ├── <script type="importmap"> maps:
   │     "react"            → https://esm.sh/react@^19.0.0
-  │     "@mf/components"   → http://localhost:5251/index.js
-  │     "@mf/ui"           → http://localhost:5252/index.js
+  │     "@mf/example-components"   → http://localhost:5251/index.js
+  │     "@mf/example-ui"           → http://localhost:5252/index.js
   │     "@tanstack/react-query" → https://esm.sh/...?external=react
   │
-  ├── Shell bundle imports { Button } from "@mf/components"
+  ├── Shell bundle imports { Button } from "@mf/example-components"
   │     → browser fetches from components dev server
   │     → components bundle imports "react"
   │     → browser resolves to same esm.sh URL
@@ -110,14 +110,14 @@ Browser loads shell (localhost:5250)
 
 Cross-package type consumption uses a **local tarball workflow** instead of workspace symlinks:
 
-1. `pnpm --filter @mf/ui publish:local` → packs to `.local-packages/mf-ui-0.0.1.tgz`
-2. Consumers reference the tarball: `"@mf/ui": "file:../../.local-packages/mf-ui-0.0.1.tgz"`
+1. `pnpm --filter @mf/example-ui publish:local` → packs to `.local-packages/mf-ui-0.0.1.tgz`
+2. Consumers reference the tarball: `"@mf/example-ui": "file:../../.local-packages/mf-ui-0.0.1.tgz"`
 
 This simulates real-world package consumption (types come from the tarball's `types/` directory) while keeping everything local and avoiding symlink issues with module resolution.
 
 ### Web Components
 
-`@mf/components` exports both React components and Web Components (e.g., `<mf-button>`) for framework-agnostic usage. The Web Components wrap the React components using `customElements.define`.
+`@mf/example-components` exports both React components and Web Components (e.g., `<mf-button>`) for framework-agnostic usage. The Web Components wrap the React components using `customElements.define`.
 
 ## Docker Deployment
 
@@ -125,8 +125,8 @@ Three services orchestrated via `docker-compose.yml`:
 
 | Service | Role |
 |---|---|
-| `components` | Serves `@mf/components` dist via nginx (with CORS headers) |
-| `shell` | Serves `@mf/shell` dist via nginx; `envsubst` replaces `${MF_COMPONENTS_URL}` at startup |
+| `components` | Serves `@mf/example-components` dist via nginx (with CORS headers) |
+| `shell` | Serves `@mf/example-shell` dist via nginx; `envsubst` replaces `${MF_COMPONENTS_URL}` at startup |
 | `proxy` | nginx reverse proxy routing `shell.local` and `components.local` |
 
 ### Running with Docker
@@ -147,8 +147,8 @@ Then open http://shell.local.
 - **React 19** + **TypeScript 5**
 - **tsgo** (`@typescript/native-preview`) for type checking
 - **Tailwind CSS v4**
-- **MUI v7** + **Base UI** (in `@mf/ui`)
-- **TanStack React Query v5** (in `@mf/components`)
+- **MUI v7** + **Base UI** (in `@mf/example-ui`)
+- **TanStack React Query v5** (in `@mf/example-components`)
 - **esm.sh** CDN for shared runtime dependencies
 - **Turborepo** for monorepo orchestration
 - **pnpm 10** with workspace catalogs for version management

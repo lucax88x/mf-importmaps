@@ -1,7 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { cdnUrl, mf } from "vite-plugin-mf-import-maps";
+import { cdnUrl, mf } from "@mf/vite-plugin";
 
 const importMap = mf.importMap({
 	imports: {

@@ -30,7 +30,7 @@ class ErrorBoundary extends Component<
 	}
 }
 
-interface LazyOptions {
+export interface LazyOptions {
 	loading?: ReactNode;
 	error?: ReactNode;
 }

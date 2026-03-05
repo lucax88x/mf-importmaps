@@ -1,4 +1,4 @@
-import { YellowButton } from "@mf/ui";
+import { YellowButton } from "@mf/example-ui";
 import { useQuery } from "@tanstack/react-query";
 
 import "../app.css";
@@ -31,7 +31,7 @@ export function PostList() {
 				))}
 			</ul>
 			<YellowButton
-				label="Yellow button from @mf/ui"
+				label="Yellow button from @mf/example-ui"
 				onClick={() => alert("Button in PostList clicked!")}
 			/>
 		</div>
