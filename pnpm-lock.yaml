@@ -56,7 +56,7 @@ importers:
     devDependencies:
       '@mf/example-ui':
         specifier: file:../../.local-packages/mf-example-ui-0.0.4.tgz
-        version: file:example/.local-packages/mf-example-ui-0.0.4.tgz(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: file:example/.local-packages/mf-example-ui-0.0.4.tgz
       '@mf/vite-plugin':
         specifier: workspace:*
         version: link:../../../packages/vite-plugin
@@ -102,10 +102,10 @@ importers:
     devDependencies:
       '@mf/example-components':
         specifier: file:../../.local-packages/mf-example-components-0.0.5.tgz
-        version: file:example/.local-packages/mf-example-components-0.0.5.tgz(@tanstack/react-query@5.90.21(react@19.2.4))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: file:example/.local-packages/mf-example-components-0.0.5.tgz
       '@mf/example-ui':
         specifier: file:../../.local-packages/mf-example-ui-0.0.4.tgz
-        version: file:example/.local-packages/mf-example-ui-0.0.4.tgz(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))
+        version: file:example/.local-packages/mf-example-ui-0.0.4.tgz
       '@mf/runtime':
         specifier: workspace:*
         version: link:../../../packages/runtime
@@ -563,23 +563,12 @@ packages:
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@mf/example-components@file:example/.local-packages/mf-example-components-0.0.5.tgz':
-    resolution: {integrity: sha512-iSKESaYFxTaVw5t/L08RpLOwEeoL9McwNlGCVrBz5OcE6aP37qTJnEf5TogVgPkOivBi2hLnd/bDfHPmht1saA==, tarball: file:example/.local-packages/mf-example-components-0.0.5.tgz}
+    resolution: {integrity: sha512-gxI1/zJqYjOpelNQpk/b7EpgSQiP3t04SXdrMMBuzV4T6JNPOOynOXX8ypBYxQXzHneuQYN1/GBhQoUPffe/pQ==, tarball: file:example/.local-packages/mf-example-components-0.0.5.tgz}
     version: 0.0.5
-    peerDependencies:
-      '@tanstack/react-query': ^5.0.0
-      '@types/react': ^19.0.0
-      '@types/react-dom': ^19.0.0
-      react: ^19.0.0
-      react-dom: ^19.0.0
 
   '@mf/example-ui@file:example/.local-packages/mf-example-ui-0.0.4.tgz':
-    resolution: {integrity: sha512-34oQ/NJ54GN4KcvsBsIB0Wk9rdRPSNQ1jkSr7NFmZRPmE9V5HyHjmZVI4k88JVFu/WoZ5tvyzKjZ2JLG+wMw0A==, tarball: file:example/.local-packages/mf-example-ui-0.0.4.tgz}
+    resolution: {integrity: sha512-CrKwpUKyd/voZOvvSTkYnDXQu7krGBayAH6V4cZdGQEJtNL01lgVqPMsIt2uA4317rmrckW3qJhy1HjVz5eBUQ==, tarball: file:example/.local-packages/mf-example-ui-0.0.4.tgz}
     version: 0.0.4
-    peerDependencies:
-      '@types/react': ^19.0.0
-      '@types/react-dom': ^19.0.0
-      react: ^19.0.0
-      react-dom: ^19.0.0
 
   '@mui/core-downloads-tracker@7.3.8':
     resolution: {integrity: sha512-s9UHZo7QJVly7gNArEZkbbsimHqJZhElgBpXIJdehZ4OWXt+CCr0SBDgUCDJnQrqpd1dWK2dLq5rmO4mCBmI3w==}
@@ -2215,34 +2204,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@mf/example-components@file:example/.local-packages/mf-example-components-0.0.5.tgz(@tanstack/react-query@5.90.21(react@19.2.4))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))':
-    dependencies:
-      '@tailwindcss/vite': 4.2.1(vite@8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))
-      '@tanstack/react-query': 5.90.21(react@19.2.4)
-      '@types/react': 19.2.14
-      '@types/react-dom': 19.2.3(@types/react@19.2.14)
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-      tailwindcss: 4.2.1
-    transitivePeerDependencies:
-      - vite
+  '@mf/example-components@file:example/.local-packages/mf-example-components-0.0.5.tgz': {}
 
-  '@mf/example-ui@file:example/.local-packages/mf-example-ui-0.0.4.tgz(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))':
-    dependencies:
-      '@base-ui/react': 1.2.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.4)
-      '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4)
-      '@mui/material': 7.3.8(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@tailwindcss/vite': 4.2.1(vite@8.0.0-beta.15(@types/node@22.19.13)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))
-      '@types/react': 19.2.14
-      '@types/react-dom': 19.2.3(@types/react@19.2.14)
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-      tailwindcss: 4.2.1
-    transitivePeerDependencies:
-      - '@mui/material-pigment-css'
-      - supports-color
-      - vite
+  '@mf/example-ui@file:example/.local-packages/mf-example-ui-0.0.4.tgz': {}
 
   '@mui/core-downloads-tracker@7.3.8': {}
 
