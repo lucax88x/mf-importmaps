@@ -16,9 +16,9 @@
 		"gh:ci": "act -W .github/workflows/ci.yml",
 		"test:unit": "vitest run",
 		"test:integration:install": "pnpm dlx playwright install --with-deps chromium",
-		"test:integration": "MODE=dev playwright test && MODE=preview playwright test",
-		"test:integration:dev": "MODE=dev playwright test",
-		"test:integration:preview": "MODE=preview playwright test"
+		"test:integration": "pnpm run test:integration:dev && pnpm run test:integration:preview",
+		"test:integration:dev": "MODE=dev pnpm run example:kill-ports && playwright test",
+		"test:integration:preview": "MODE=preview pnpm run example:kill-ports && playwright test"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
@@ -34,6 +34,7 @@
 		"@playwright/test": "^1.50.1",
 		"tsx": "^4.21.0",
 		"turbo": "^2",
-		"vitest": "^3.1.1"
+		"vitest": "^3.1.1",
+		"zx": "^8.8.5"
 	}
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env zx
 
+import { $ } from "zx";
+
 const ports = [5250, 5251, 5252];
 
 for (const port of ports) {

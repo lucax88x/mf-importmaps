@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const UI_URL = "http://localhost:5252";
+const UI_URL = "http://localhost:5252/ui";
 
 test.describe("@mf/example-ui", () => {
 	test.beforeEach(async ({ page }) => {
