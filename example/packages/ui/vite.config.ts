@@ -1,7 +1,7 @@
+import { cdnUrl, mf } from "@mf/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { cdnUrl, mf } from "@mf/vite-plugin";
 
 const importMap = mf.importMap({
 	imports: {
@@ -22,6 +22,7 @@ const libraryEntries = mf.libraryEntries({
 });
 
 export default defineConfig({
+	base: "/ui",
 	plugins: [tailwindcss(), react(), importMap.plugin(), libraryEntries],
 	server: {
 		port: 5252,

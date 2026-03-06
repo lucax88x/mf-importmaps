@@ -9,8 +9,10 @@
 		"example:dev": "turbo dev",
 		"example:typecheck": "turbo typecheck",
 		"example:publish-local": "turbo publish:local",
+		"example:types:emit": "turbo types:emit",
 		"example:preview": "turbo preview",
 		"example:docker-up": "docker compose -f example/docker-compose.yml up --build",
+		"example:kill-ports": "tsx ./example/kill-ports.mts",
 		"gh:ci": "act -W .github/workflows/ci.yml",
 		"test:unit": "vitest run",
 		"test:integration:install": "pnpm dlx playwright install --with-deps chromium",
@@ -30,6 +32,7 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.50.1",
+		"tsx": "^4.21.0",
 		"turbo": "^2",
 		"vitest": "^3.1.1"
 	}

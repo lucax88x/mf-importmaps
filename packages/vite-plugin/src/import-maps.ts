@@ -185,9 +185,6 @@ export const createExportsPlugin = (
 	htmlEntry = "index.html",
 ): Plugin => {
 	const entryNames = new Set(Object.keys(exports));
-	const rewrites = new Map(
-		Object.entries(exports).map(([name, src]) => [`/${name}.js`, `/${src}`]),
-	);
 
 	return {
 		name: "exports",
@@ -222,6 +219,15 @@ export const createExportsPlugin = (
 		},
 
 		configureServer(server) {
+			const base = (server?.config?.base || "/").replace(/\/$/, "");
+
+			const rewrites = new Map(
+				Object.entries(exports).map(([name, src]) => [
+					`${base}/${name}.js`,
+					`${base}/${src}`,
+				]),
+			);
+
 			server.middlewares.use((req, _res, next) => {
 				if (!req.url) {
 					next();
@@ -229,7 +235,9 @@ export const createExportsPlugin = (
 				}
 
 				const rewrite = rewrites.get(req.url);
+
 				if (rewrite) {
+					console.log(`[exports] rewrite ${req.url} -> ${rewrite}`);
 					req.url = rewrite;
 				}
 

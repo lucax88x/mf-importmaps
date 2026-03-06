@@ -15,7 +15,8 @@
 		}
 	},
 	"scripts": {
-		"build": "vite build && rm -rf types && tsgo -p tsconfig.build.json",
+		"types:emit": "rm -rf types && tsgo -p tsconfig.build.json",
+		"build": "vite build",
 		"publish:local": "mkdir -p ../../.local-packages && pnpm pack --pack-destination ../../.local-packages",
 		"typecheck": "tsgo --noEmit",
 		"preview": "vite preview",

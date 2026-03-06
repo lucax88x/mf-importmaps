@@ -278,4 +278,70 @@ describe("createExportsPlugin", () => {
 		expect(req.url).toBe("/other.js");
 		expect(next).toHaveBeenCalled();
 	});
+
+	it("configureServer rewrites URLs with base prefix", () => {
+		const plugin = createExportsPlugin(exports);
+		const middlewares: Function[] = [];
+		const mockServer = {
+			config: { base: "/my-app/" },
+			middlewares: { use: (fn: Function) => middlewares.push(fn) },
+		};
+
+		(plugin.configureServer as Function)(mockServer);
+
+		const req = { url: "/my-app/components.js" };
+		const next = vi.fn();
+		middlewares[0](req, {}, next);
+		expect(req.url).toBe("/my-app/src/components.ts");
+		expect(next).toHaveBeenCalled();
+	});
+
+	it("configureServer does not rewrite URLs without base prefix", () => {
+		const plugin = createExportsPlugin(exports);
+		const middlewares: Function[] = [];
+		const mockServer = {
+			config: { base: "/my-app/" },
+			middlewares: { use: (fn: Function) => middlewares.push(fn) },
+		};
+
+		(plugin.configureServer as Function)(mockServer);
+
+		const req = { url: "/components.js" };
+		const next = vi.fn();
+		middlewares[0](req, {}, next);
+		expect(req.url).toBe("/components.js");
+		expect(next).toHaveBeenCalled();
+	});
+
+	it("configureServer handles base without trailing slash", () => {
+		const plugin = createExportsPlugin(exports);
+		const middlewares: Function[] = [];
+		const mockServer = {
+			config: { base: "/my-app" },
+			middlewares: { use: (fn: Function) => middlewares.push(fn) },
+		};
+
+		(plugin.configureServer as Function)(mockServer);
+
+		const req = { url: "/my-app/components.js" };
+		const next = vi.fn();
+		middlewares[0](req, {}, next);
+		expect(req.url).toBe("/my-app/src/components.ts");
+		expect(next).toHaveBeenCalled();
+	});
+
+	it("configureServer calls next when req.url is undefined", () => {
+		const plugin = createExportsPlugin(exports);
+		const middlewares: Function[] = [];
+		const mockServer = {
+			middlewares: { use: (fn: Function) => middlewares.push(fn) },
+		};
+
+		(plugin.configureServer as Function)(mockServer);
+
+		const req = { url: undefined };
+		const next = vi.fn();
+		middlewares[0](req, {}, next);
+		expect(next).toHaveBeenCalled();
+	});
 });

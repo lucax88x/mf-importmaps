@@ -5,6 +5,10 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"]
 		},
+		"types:emit": {
+			"dependsOn": ["^types:emit"],
+			"outputs": ["types/**"]
+		},
 		"publish:local": {
 			"dependsOn": ["^publish:local"],
 			"outputs": ["dist/**"]

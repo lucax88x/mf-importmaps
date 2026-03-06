@@ -1,7 +1,7 @@
+import { cdnUrl, mf } from "@mf/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { cdnUrl, mf } from "@mf/vite-plugin";
 
 const importMap = mf.importMap({
 	imports: {
@@ -18,7 +18,7 @@ const importMap = mf.importMap({
 		}),
 	},
 	devBaseReplace: {
-		"${MF_UI_URL}": "http://localhost:5252",
+		"${MF_UI_URL}": "http://localhost:5252/ui",
 	},
 });
 
