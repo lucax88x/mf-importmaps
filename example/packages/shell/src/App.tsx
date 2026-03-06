@@ -6,6 +6,7 @@ import { PostList } from "@mf/example-components/PostList";
 import { YellowButton } from "@mf/example-ui";
 import { useState } from "react";
 import { LazySlowButton } from "./LazySlowButton";
+import { navigate } from "./main";
 import { ShellUserList } from "./ShellUserList";
 
 // Reference MfButton so the import isn't dropped (it registers the custom element)
@@ -31,6 +32,11 @@ export default function App() {
 				margin: "0 auto",
 			}}
 		>
+			<nav style={{ marginBottom: "1rem" }}>
+				<a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}>Home</a>
+				{" | "}
+				<a href="/about" onClick={(e) => { e.preventDefault(); navigate("/about"); }}>About</a>
+			</nav>
 			<h1>Microfrontend Shell</h1>
 			<p>
 				All imports below come from <code>@mf/example-components</code> via import maps

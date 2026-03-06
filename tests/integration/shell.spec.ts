@@ -95,4 +95,19 @@ test.describe("@mf/example-shell", () => {
 	test("no error boundary is triggered", async ({ page }) => {
 		await expect(page.locator("text=Shell Error")).not.toBeVisible();
 	});
+
+	test("navigates to /about and back via client-side routing", async ({ page }) => {
+		await page.getByRole("link", { name: "About" }).click();
+		await expect(page.locator("h1")).toHaveText("About");
+		await expect(page).toHaveURL(`${SHELL_URL}/about`);
+
+		await page.getByRole("link", { name: "Home" }).click();
+		await expect(page.locator("h1")).toHaveText("Microfrontend Shell");
+		await expect(page).toHaveURL(`${SHELL_URL}/`);
+	});
+
+	test("/about route works on direct navigation (SPA fallback)", async ({ page }) => {
+		await page.goto(`${SHELL_URL}/about`);
+		await expect(page.locator("h1")).toHaveText("About");
+	});
 });

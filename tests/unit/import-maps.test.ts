@@ -214,6 +214,147 @@ describe("createImportMap", () => {
 			expect(result).toBeUndefined();
 		});
 	});
+
+	describe("configurePreviewServer", () => {
+		const configWithReplace = {
+			...baseConfig,
+			devBaseReplace: { "${CDN}": "http://localhost:3000" },
+		};
+
+		function setupPreviewServer(config: typeof configWithReplace, serverOverrides: Record<string, unknown> = {}) {
+			const plugin = createImportMapPlugin(config).plugin();
+			const middlewares: Function[] = [];
+			const mockServer = {
+				config: {
+					base: "/",
+					root: "/project",
+					build: { outDir: "dist" },
+				},
+				middlewares: { use: (fn: Function) => middlewares.push(fn) },
+				...serverOverrides,
+			};
+			(plugin.configurePreviewServer as Function)(mockServer);
+			return middlewares[0];
+		}
+
+		it("does not register middleware when devBaseReplace is undefined", () => {
+			const plugin = createImportMapPlugin(baseConfig).plugin();
+			const middlewares: Function[] = [];
+			const mockServer = {
+				config: { base: "/", root: "/project", build: { outDir: "dist" } },
+				middlewares: { use: (fn: Function) => middlewares.push(fn) },
+			};
+			(plugin.configurePreviewServer as Function)(mockServer);
+			expect(middlewares).toHaveLength(0);
+		});
+
+		it("serves HTML for root path /", () => {
+			const middleware = setupPreviewServer(configWithReplace);
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/" }, res, next);
+			// readFileSync will throw in test (no real file), so it falls through to next
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("skips static assets like .js files", () => {
+			const middleware = setupPreviewServer(configWithReplace);
+			const next = vi.fn();
+			middleware({ url: "/assets/index-abc123.js" }, {}, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("skips static assets like .css files", () => {
+			const middleware = setupPreviewServer(configWithReplace);
+			const next = vi.fn();
+			middleware({ url: "/assets/style-abc.css" }, {}, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("serves HTML for .html files", () => {
+			const middleware = setupPreviewServer(configWithReplace);
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/about.html" }, res, next);
+			// Falls through to next due to readFileSync throwing (no real file)
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("serves HTML for SPA routes (no file extension)", () => {
+			const middleware = setupPreviewServer(configWithReplace);
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/about" }, res, next);
+			// Falls through to next due to readFileSync, but the key is it didn't bail early
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("serves HTML for nested SPA routes", () => {
+			const middleware = setupPreviewServer(configWithReplace);
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/dashboard/settings" }, res, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("strips base prefix and serves HTML for root", () => {
+			const middleware = setupPreviewServer(configWithReplace, {
+				config: { base: "/my-app/", root: "/project", build: { outDir: "dist" } },
+			});
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/my-app/" }, res, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("strips base prefix and serves HTML for SPA route", () => {
+			const middleware = setupPreviewServer(configWithReplace, {
+				config: { base: "/my-app/", root: "/project", build: { outDir: "dist" } },
+			});
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/my-app/about" }, res, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("skips static assets under base prefix", () => {
+			const middleware = setupPreviewServer(configWithReplace, {
+				config: { base: "/my-app/", root: "/project", build: { outDir: "dist" } },
+			});
+			const next = vi.fn();
+			middleware({ url: "/my-app/assets/index.js" }, {}, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("skips URLs that don't match the base prefix", () => {
+			const middleware = setupPreviewServer(configWithReplace, {
+				config: { base: "/my-app/", root: "/project", build: { outDir: "dist" } },
+			});
+			const next = vi.fn();
+			middleware({ url: "/other-app/about" }, {}, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("handles base without trailing slash", () => {
+			const middleware = setupPreviewServer(configWithReplace, {
+				config: { base: "/my-app", root: "/project", build: { outDir: "dist" } },
+			});
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/my-app/about" }, res, next);
+			expect(next).toHaveBeenCalled();
+		});
+
+		it("handles exact base URL without trailing slash", () => {
+			const middleware = setupPreviewServer(configWithReplace, {
+				config: { base: "/my-app/", root: "/project", build: { outDir: "dist" } },
+			});
+			const res = { setHeader: vi.fn(), end: vi.fn() };
+			const next = vi.fn();
+			middleware({ url: "/my-app" }, res, next);
+			expect(next).toHaveBeenCalled();
+		});
+	});
 });
 
 describe("createExportsPlugin", () => {

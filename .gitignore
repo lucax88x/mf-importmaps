@@ -4,3 +4,4 @@ dist
 types
 .local-packages
 packages/vite-plugin/dist
+test-results

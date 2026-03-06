@@ -144,15 +144,37 @@ export const createImportMapPlugin = (config: ImportMapConfig) => {
 				if (!devBaseReplace) return;
 
 				const replaceEntries = Object.entries(devBaseReplace);
+				const base = (server.config.base || "/").replace(/\/$/, "");
 
 				server.middlewares.use((req, res, next) => {
 					const url = req.url || "/";
-					if (url !== "/" && !url.endsWith(".html")) {
+
+					// Strip base prefix to get the local path
+					let path: string;
+					if (base) {
+						if (url === base || url.startsWith(`${base}/`)) {
+							path = url.slice(base.length) || "/";
+						} else {
+							next();
+							return;
+						}
+					} else {
+						path = url;
+					}
+
+					// Skip static assets (have a file extension that isn't .html)
+					const filename = path.split("/").pop() || "";
+
+					if (filename.includes(".") && !filename.endsWith(".html")) {
 						next();
 						return;
 					}
 
-					const htmlPath = url === "/" ? "index.html" : url.slice(1);
+					// For .html files serve that file, for routes (no extension) serve index.html
+					const htmlPath = filename.endsWith(".html")
+						? path.slice(1)
+						: "index.html";
+
 					const fullPath = resolve(
 						server.config.root,
 						server.config.build.outDir,

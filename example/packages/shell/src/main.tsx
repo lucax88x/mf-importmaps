@@ -1,9 +1,35 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ErrorInfo, ReactNode } from "react";
-import { Component, StrictMode } from "react";
+import { Component, StrictMode, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
+import About from "./About";
 import App from "./App";
 import "./app.css";
+
+function subscribeToLocation(callback: () => void) {
+	window.addEventListener("popstate", callback);
+	return () => window.removeEventListener("popstate", callback);
+}
+
+function getLocationPath() {
+	return window.location.pathname;
+}
+
+export function navigate(to: string) {
+	window.history.pushState(null, "", to);
+	window.dispatchEvent(new PopStateEvent("popstate"));
+}
+
+function Router() {
+	const pathname = useSyncExternalStore(subscribeToLocation, getLocationPath);
+
+	switch (pathname) {
+		case "/about":
+			return <About />;
+		default:
+			return <App />;
+	}
+}
 
 class ErrorBoundary extends Component<
 	{ children: ReactNode },
@@ -44,7 +70,7 @@ createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<ErrorBoundary>
 			<QueryClientProvider client={queryClient}>
-				<App />
+				<Router />
 			</QueryClientProvider>
 		</ErrorBoundary>
 	</StrictMode>,
