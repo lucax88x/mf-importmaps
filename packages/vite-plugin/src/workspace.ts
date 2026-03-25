@@ -45,7 +45,7 @@ export function resetDepsCache(): void {
 
 export function cdnUrl(
 	specifier: string,
-	options?: { externals?: string[] },
+	options?: { externals?: string[]; dev?: boolean },
 ): string {
 	const baseName = getBasePackageName(specifier);
 	const deps = getDeps();
@@ -57,11 +57,20 @@ export function cdnUrl(
 	}
 
 	const subpath = specifier.slice(baseName.length);
-	let url = `https://esm.sh/${baseName}@${version}${subpath}`;
+	const url = new URL(`https://esm.sh/${baseName}@${version}${subpath}`);
+	const params: string[] = [];
 
 	if (options?.externals?.length) {
-		url += `?external=${options.externals.join(",")}`;
+		params.push(`external=${options.externals.join(",")}`);
 	}
 
-	return url;
+	if (options?.dev) {
+		params.push("dev");
+	}
+
+	if (params.length) {
+		url.search = params.join("&");
+	}
+
+	return url.toString();
 }

@@ -124,6 +124,20 @@ describe("cdnUrl", () => {
 		);
 	});
 
+	it("appends dev query parameter", () => {
+		setupWorkspace({ react: "^18.2.0" });
+		expect(cdnUrl("react", { dev: true })).toBe(
+			"https://esm.sh/react@%5E18.2.0?dev",
+		);
+	});
+
+	it("appends both externals and dev query parameters", () => {
+		setupWorkspace({ react: "^18.2.0" });
+		expect(
+			cdnUrl("react", { externals: ["react-dom"], dev: true }),
+		).toBe("https://esm.sh/react@%5E18.2.0?external=react-dom&dev");
+	});
+
 	it("throws for unknown package", () => {
 		setupWorkspace({ react: "^18.2.0" });
 		expect(() => cdnUrl("vue")).toThrow(
