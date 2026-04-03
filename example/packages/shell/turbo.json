@@ -1,0 +1,9 @@
+{
+	"extends": ["//"],
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build", "@mf/example-components#build"],
+			"outputs": ["dist/**"]
+		}
+	}
+}

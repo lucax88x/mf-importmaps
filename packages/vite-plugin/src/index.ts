@@ -1,4 +1,4 @@
-export type { ImportMapConfig } from "./import-maps";
+export type { ImportMapConfig, ManifestV1, RemoteConfig } from "./import-maps";
 
 import { buildDefaults } from "./build-defaults";
 import { createExportsPlugin, createImportMapPlugin } from "./import-maps";

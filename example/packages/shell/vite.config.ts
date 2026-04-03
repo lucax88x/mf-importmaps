@@ -8,11 +8,6 @@ export default defineConfig(({ mode }) => {
 
 	const importMap = mf.importMap({
 		imports: {
-			"@mf/example-ui": "${MF_UI_URL}/index.js",
-			"@mf/example-ui/YellowButton": "${MF_UI_URL}/YellowButton.js",
-			"@mf/example-ui/MuiSelect": "${MF_UI_URL}/MuiSelect.js",
-			"@mf/example-ui/BaseSelect": "${MF_UI_URL}/BaseSelect.js",
-
 			"@mf/example-components": "${MF_COMPONENTS_URL}/index.js",
 			"@mf/example-components/button": "${MF_COMPONENTS_URL}/button.js",
 			"@mf/example-components/mf-button": "${MF_COMPONENTS_URL}/mf-button.js",
@@ -34,8 +29,13 @@ export default defineConfig(({ mode }) => {
 			}),
 		},
 		esmRequireExternals: ["react", "react-dom"],
+		remotes: [
+			{
+				url: "${MF_COMPONENTS_URL}",
+				devUrl: "http://localhost:5251",
+			},
+		],
 		devBaseReplace: {
-			"${MF_UI_URL}": "http://localhost:5252/ui",
 			"${MF_COMPONENTS_URL}": "http://localhost:5251",
 		},
 	});

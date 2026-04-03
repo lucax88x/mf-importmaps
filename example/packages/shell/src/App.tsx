@@ -1,9 +1,6 @@
 import { Button, MfButton } from "@mf/example-components";
-import { BaseSelect } from "@mf/example-ui/BaseSelect";
 import { calculate } from "@mf/example-components/calculate";
-import { MuiSelect } from "@mf/example-ui/MuiSelect";
 import { PostList } from "@mf/example-components/PostList";
-import { YellowButton } from "@mf/example-ui";
 import { useState } from "react";
 import { LazySlowButton } from "./LazySlowButton";
 import { navigate } from "./main";
@@ -11,13 +8,6 @@ import { ShellUserList } from "./ShellUserList";
 
 // Reference MfButton so the import isn't dropped (it registers the custom element)
 console.log("Web component registered:", MfButton.name);
-
-const fruitOptions = [
-	{ value: "apple", label: "Apple" },
-	{ value: "banana", label: "Banana" },
-	{ value: "cherry", label: "Cherry" },
-	{ value: "dragonfruit", label: "Dragonfruit" },
-];
 
 export default function App() {
 	const [count, setCount] = useState(0);
@@ -33,14 +23,30 @@ export default function App() {
 			}}
 		>
 			<nav style={{ marginBottom: "1rem" }}>
-				<a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}>Home</a>
+				<a
+					href="/"
+					onClick={(e) => {
+						e.preventDefault();
+						navigate("/");
+					}}
+				>
+					Home
+				</a>
 				{" | "}
-				<a href="/about" onClick={(e) => { e.preventDefault(); navigate("/about"); }}>About</a>
+				<a
+					href="/about"
+					onClick={(e) => {
+						e.preventDefault();
+						navigate("/about");
+					}}
+				>
+					About
+				</a>
 			</nav>
 			<h1>Microfrontend Shell</h1>
 			<p>
-				All imports below come from <code>@mf/example-components</code> via import maps
-				(in production build).
+				All imports below come from <code>@mf/example-components</code> via
+				import maps (in production build).
 			</p>
 
 			<section style={{ marginBottom: "2rem" }}>
@@ -94,24 +100,6 @@ export default function App() {
 					<code>QueryClient</code>):
 				</p>
 				<ShellUserList />
-			</section>
-
-			<section style={{ marginBottom: "2rem" }}>
-				<h2>6. YellowButton from @mf/example-ui (direct)</h2>
-				<p>
-					Imported directly from <code>@mf/example-ui</code> in the shell:
-				</p>
-				<YellowButton label="Direct from @mf/example-ui in shell!" />
-			</section>
-
-			<section style={{ marginBottom: "2rem" }}>
-				<h2>MUI Select</h2>
-				<MuiSelect label="Fruit" options={fruitOptions} />
-			</section>
-
-			<section style={{ marginBottom: "2rem" }}>
-				<h2>Base Select</h2>
-				<BaseSelect options={fruitOptions} />
 			</section>
 
 			<section style={{ marginBottom: "2rem" }}>
